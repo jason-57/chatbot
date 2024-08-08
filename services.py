@@ -249,7 +249,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     elif "generar ticket" in text:        
         body = "Buena elección! Perfecto, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
         footer = "Redsis su aliado estratégico"
-        options = ["Comercial", "Sistemas", "Finanzas"]
+        options = ["Comercial", "Sistemas", "Finanzas de recursos humanos"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "👍")
