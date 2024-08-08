@@ -231,7 +231,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     list.append(markRead)
     time.sleep(2)
 
-    if "hola" in text and flujo_chat==0:
+    if "hola" in text or flujo_chat==0:
         textMessage = text_Message(number,"Bienvenido al área de soporte técnico Redsis, por favor indicanos tú nombre")        
         list.append(textMessage)
         flujo_chat+=1
