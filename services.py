@@ -45,7 +45,7 @@ def enviar_Mensaje_whatsapp(data):
     except Exception as e:
         return e,403
     
-def text_Message(number,text):
+def text_Message(number,text,variable):
     data = json.dumps(
             {
                 "messaging_product": "whatsapp",    
@@ -53,7 +53,7 @@ def text_Message(number,text):
                 "to": number,
                 "type": "text",
                 "text": {
-                    "body": text
+                    "body": variable + text
                 }
             }
     )
@@ -228,7 +228,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     time.sleep(2)
 
     if "hola" in text:
-        textMessage = text_Message(number,"Bienvenido, cual es tu nombre")        
+        textMessage = text_Message(number,"Bienvenido al área de soporte técnico Redsis, por favor indicanos tú nombre","nombre:")        
         list.append(textMessage)
 
     elif "nombre:" in text:
