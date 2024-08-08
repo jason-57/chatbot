@@ -242,8 +242,6 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         options = ["generar ticket", " ver estado ticket", "actualizar ticket"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
-        replyReaction = replyReaction_Message(number, messageId, "")
-        list.append(replyReaction)
         list.append(replyButtonData)
 
     elif "generar ticket" in text:
