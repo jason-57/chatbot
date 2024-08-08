@@ -7,6 +7,9 @@ import re
 from datetime import datetime
 from databases import DatabaseManager
 
+#Variables globales para el control del chatbot
+flujo_chat=0
+
 def obtener_Mensaje_whatsapp(message):
     if 'type' not in message :
         text = 'mensaje no reconocido'
@@ -45,7 +48,7 @@ def enviar_Mensaje_whatsapp(data):
     except Exception as e:
         return e,403
     
-def text_Message(number,text,variable):
+def text_Message(number,text):
     data = json.dumps(
             {
                 "messaging_product": "whatsapp",    
@@ -53,7 +56,7 @@ def text_Message(number,text,variable):
                 "to": number,
                 "type": "text",
                 "text": {
-                    "body": variable + text
+                    "body": text
                 }
             }
     )
@@ -216,6 +219,7 @@ def markRead_Message(messageId):
     return data
 
 def administrar_chatbot(text,number, messageId, name, timestamp):
+    
     db_manager = DatabaseManager() #instanciamos el objeto
     db_type = 'postgresql' # previamente configuramos solo mysql y postgresql
     conn = db_manager.connect(db_type)
@@ -227,12 +231,13 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     list.append(markRead)
     time.sleep(2)
 
-    if "hola" in text:
-        textMessage = text_Message(number,"Bienvenido al área de soporte técnico Redsis, por favor indicanos tú nombre","nombre:")        
+    if "hola" in text and flujo_chat==0:
+        textMessage = text_Message(number,"Bienvenido al área de soporte técnico Redsis, por favor indicanos tú nombre")        
         list.append(textMessage)
+        flujo_chat+=1
 
-    elif "nombre:" in text:
-        nombre = re.search("nombre:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el nombre
+    elif flujo_chat==1:
+        nombre = re.search("(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el nombre
         body = f"Hola! {nombre} Bienvenido a Soporte Bigdateros. cómo podemos ayudarte hoy?"
         footer = "Equipo Bigdateros"
         options = ["馃帿 generar ticket", "馃攳 ver estado ticket", "馃攧 actualizar ticket"]
@@ -241,9 +246,12 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         replyReaction = replyReaction_Message(number, messageId, "馃")
         list.append(replyReaction)
         list.append(replyButtonData)
+        flujo_chat+=1
+
     elif "generar ticket" in text:
         textMessage = text_Message(number,"Buena elecci贸n! Por favor ingresa su consulta con el siguiente formato: \n\n*'Ingresar Incidente:  <Ingresa breve descripci贸n del problema>*' \n\n Para que nuestros analistas lo revisen 馃槉")
         list.append(textMessage)
+
     elif "ingresar incidente" in text:
         description = re.search("ingresar incidente:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la descripci贸n del incidente
         created_at = datetime.fromtimestamp(timestamp)  
@@ -254,9 +262,9 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         footer = "Equipo Bigdateros"
         options = ["鉁?S铆", "鉀?No, gracias"]
         replyButtonData = buttonReply_Message(number, 
-                                              options, 
-                                              body, 
-                                              footer, "sed4",messageId)
+                                            options, 
+                                            body, 
+                                            footer, "sed4",messageId)
         list.append(replyButtonData)
     elif "s铆" in text:
         body = "驴C贸mo podemos ayudarte hoy?"
@@ -278,9 +286,9 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         footer = "Equipo Bigdateros"
         options = ["鉁?S铆", "鉀?No, gracias"]
         replyButtonData = buttonReply_Message(number, 
-                                              options, 
-                                              body, 
-                                              footer, "sed4",messageId)
+                                            options, 
+                                            body, 
+                                            footer, "sed4",messageId)
         list.append(replyButtonData)
     elif "actualizar ticket" in text:
         textMessage = text_Message(number,"De acuerdo, Por favor ingresa el siguiente formato:\n\n*Actualizar TKXXX: <Breve descripci贸n a actualizar>*. ")
@@ -302,6 +310,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     elif "no, gracias." in text:
         textMessage = text_Message(number,"Perfecto! No dudes en contactarnos si tienes m谩s preguntas. 隆Hasta luego! 馃槉")
         list.append(textMessage)
+        flujo_chat=0
     else :
         data = text_Message(number,"Lo siento, no entend铆 lo que dijiste. 驴Quieres que te ayude con alguna de estas opciones?")
         list.append(data)
