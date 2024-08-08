@@ -245,12 +245,12 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         list.append(replyButtonData)
 
     elif "generar ticket" in text:
-            body = f"Perfecto, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
-            footer = "Redsis su aliado estratégico"
-            options = ["1.Comercial", "2.Sistemas", "3.Recursos Humanos", "4.Atención al Cliente"]
+        body = f"Perfecto, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
+        footer = "Redsis su aliado estratégico"
+        options = ["1.Comercial", "2.Sistemas", "3.Recursos Humanos", "4.Atención al Cliente"]
 
-            replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
-            list.append(replyButtonData)
+        replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
+        list.append(replyButtonData)
     
     elif "comercial" in text or "sistemas" in text or "recursos humanos" in text or "atención al cliente" in text:
         area = re.search("\\d.(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el area
