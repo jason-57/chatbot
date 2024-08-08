@@ -249,7 +249,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     elif "generar ticket" in text:        
         body = "Buena elección! Perfecto, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
         footer = "Redsis su aliado estratégico"
-        options = ["Comercial", "Sistemas", "Finanzas","Recursos Humanos"]
+        options = ["Comercial", "Sistemas", "Finanzas"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "👍")
@@ -265,7 +265,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         replyReaction = replyReaction_Message(number, messageId, "👍")
         list.append(replyReaction)
         list.append(replyButtonData)
-        
+
     elif "ingresar incidente:" in text:
         description = re.search("ingresar incidente:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la descripci贸n del incidente
         created_at = datetime.fromtimestamp(timestamp)  
