@@ -249,14 +249,15 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     elif "generar ticket" in text:        
         body = "Buena elección! Perfecto, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
         footer = "Redsis su aliado estratégico"
-        options = ["Comercial", "Sistemas", "Finanzas de recursos humanos"]
+        options = ["Comercial", "Sistemas", "Jurídica"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "👍")
         list.append(replyReaction)
         list.append(replyButtonData)
     
-    elif "comercial" in text or "sistemas" in text or "finanzas" in text or "recursos humanos" in text:        
+    elif "comercial" in text or "sistemas" in text or "jurídica" in text:   
+        area = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el area     
         body = "Perfecto! Por favor selecciona el tipo de ticket que deseas generar"
         footer = "Redsis su aliado estratégico"
         options = ["Incidente", "Solicitud"]
@@ -266,13 +267,33 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         list.append(replyReaction)
         list.append(replyButtonData)
 
-    elif "ingresar incidente:" in text:
-        description = re.search("ingresar incidente:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la descripci贸n del incidente
+    elif "incidente" in text or "solicitud" in text:   
+        tipo_ticket = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el tipo de ticket     
+        body = "Muy bien, ahora selecciona la prioridad para tu solicitud:"
+        footer = "Redsis su aliado estratégico"
+        options = ["Bajo", "Medio","Alto"]
+
+        replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
+        replyReaction = replyReaction_Message(number, messageId, "👍")
+        list.append(replyReaction)
+        list.append(replyButtonData)
+    
+    elif "bajo" in text or "medio" in text or "alto" in text:
+        textMessage = text_Message(number,f"Para continuar ingresa el encabezado de tu {tipo_ticket} usando el siguiente formato:\n\n*Title: <Título de tu solicitud>*")        
+        list.append(textMessage)
+
+    elif "title:" in text:
+        titulo = re.search("title:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el titulo de la solicitud
+        textMessage = text_Message(number,f"Por favor ingresa una breve descripción de tu  {tipo_ticket} usando el siguiente formato:\n\n*Description: <Descripción de tu solicitud>*")        
+        list.append(textMessage)
+
+    elif "description:" in text:
+        description = re.search("description:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la descripción de la solicitud
         created_at = datetime.fromtimestamp(timestamp)  
         ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
 
         db_manager.create_ticket(db_type, conn, ticket_id, 'Nuevo', created_at, number, name, description)  
-        body = f"Perfecto, se generó el ticket *{ticket_id}*, en breve se estarán comunicando contigo. \n\nDeseas realizar otra consulta?"
+        body = f"Perfecto {nombre}, se generó el ticket *{ticket_id}*, en breve se estarán comunicando contigo. \n\nDeseas realizar otra consulta?"
         footer = "Redsis su aliado estratégico"
         options = ["✔️Sí", "❌No, gracias"]
         replyButtonData = buttonReply_Message(number, 
