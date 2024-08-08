@@ -228,6 +228,10 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     time.sleep(2)
 
     if "hola" in text:
+        textMessage = "nombre:"+text_Message(number,"Bienvenido, cual es tu nombre")
+        list.append(textMessage)
+
+    elif "nombre:" in text:
         body = "隆Hola! 馃憢 Bienvenido a Soporte Bigdateros. 驴C贸mo podemos ayudarte hoy?"
         footer = "Equipo Bigdateros"
         options = ["馃帿 generar ticket", "馃攳 ver estado ticket", "馃攧 actualizar ticket"]
@@ -235,7 +239,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "馃")
         list.append(replyReaction)
-        list.append("generar:"+replyButtonData)
+        list.append(replyButtonData)
     elif "generar ticket" in text:
         textMessage = text_Message(number,"Buena elecci贸n! Por favor ingresa su consulta con el siguiente formato: \n\n*'Ingresar Incidente:  <Ingresa breve descripci贸n del problema>*' \n\n Para que nuestros analistas lo revisen 馃槉")
         list.append(textMessage)
