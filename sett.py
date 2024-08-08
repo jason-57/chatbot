@@ -1,0 +1,7 @@
+token = 'PRUEBAGLPIREDSIS'
+whatsapp_token = 'EAASOQaZBMTF4BO3m53riOJPrr7j7Y3oGMp1KvOUCRLb1z28Aq2izAA6bWZCW3Civ80znkFD9xZBGESNnXCfzZCbJGCDS2gjdfQ4UA2hd2esxOS71sZA4Wrmty3w3s499q0xzXr8ygYY2gsXbwPXL5CaQxLIOtjABwTOu0wShjaZCraXiZCC9iZAunZBfC0IGZBlelMmZAgI9ZAa6vTZCsSfIZD'
+whatsapp_url = 'https://graph.facebook.com/v20.0/352262487976075/messages'
+
+
+
+
