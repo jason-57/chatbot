@@ -228,11 +228,11 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     time.sleep(2)
 
     if "hola" in text:
-        textMessage = text_Message(number,"Bienvenido, cual es tu nombre")
-        nombre = re.search("nombre:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el nombre
+        textMessage = text_Message(number,"Bienvenido, cual es tu nombre")        
         list.append(textMessage)
 
     elif "nombre:" in text:
+        nombre = re.search("nombre:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el nombre
         body = f"Hola! {nombre} Bienvenido a Soporte Bigdateros. cómo podemos ayudarte hoy?"
         footer = "Equipo Bigdateros"
         options = ["馃帿 generar ticket", "馃攳 ver estado ticket", "馃攧 actualizar ticket"]
