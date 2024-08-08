@@ -242,14 +242,18 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         options = ["Generar Ticket", "Ver Estado Ticket", "Actualizar Ticket"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
-        list.append(replyButtonData) 
+        replyReaction = replyReaction_Message(number, messageId, "🫡")
+        list.append(replyReaction)
+        list.append(replyButtonData)
     
     elif "generar ticket" in text:
         body = f"Perfecto, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
         footer = "Redsis su aliado estratégico"
-        options = ["1.Comercial", "2.Sistemas", "3.Recursos", "4.Atención"]
+        options = ["Comercial", "Sistemas", "Recursos", "Atención"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed2",messageId)
+        replyReaction = replyReaction_Message(number, messageId, "🫡")
+        list.append(replyReaction)
         list.append(replyButtonData)
     
     elif "comercial" in text or "sistemas" in text or "recursos humanos" in text or "atención al cliente" in text:
