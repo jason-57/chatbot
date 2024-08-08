@@ -247,16 +247,26 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         list.append(replyButtonData)
 
     elif "generar ticket" in text:        
-        body = "Buena elección! Por favor ingresa su consulta con el siguiente formato: \n\n*'Ingresar Incidente:  <Ingresa breve descripción del problema>*' \n\n Para que nuestros analistas lo revisen"
+        body = "Buena elección! Perfecto, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
         footer = "Redsis su aliado estratégico"
-        options = ["ingresar inc", "b", "c"]
+        options = ["Comercial", "Sistemas", "Finanzas","Recursos Humanos"]
+
+        replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
+        replyReaction = replyReaction_Message(number, messageId, "👍")
+        list.append(replyReaction)
+        list.append(replyButtonData)
+    
+    elif "comercial" in text or "sistemas" in text or "finanzas" in text or "recursos humanos" in text:        
+        body = "Perfecto! Por favor selecciona el tipo de ticket que deseas generar"
+        footer = "Redsis su aliado estratégico"
+        options = ["Incidente", "Solicitud"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "👍")
         list.append(replyReaction)
         list.append(replyButtonData)
         
-    elif "ingresar" in text:
+    elif "ingresar incidente:" in text:
         description = re.search("ingresar incidente:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la descripci贸n del incidente
         created_at = datetime.fromtimestamp(timestamp)  
         ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
