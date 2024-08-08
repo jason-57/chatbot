@@ -237,9 +237,9 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
 
     elif "nombre:" in text:
         #nombre = re.search("nombre:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el nombre
-        body = f"¿Hola  en que podemos ayudarte hoy?"
+        body = "¿Hola  en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
-        options = ["generar ticket", "consultar ticket", "actualizar ticket"]
+        options = ["generar ticket", " ver estado ticket", "actualizar ticket"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "")
