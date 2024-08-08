@@ -239,44 +239,15 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         nombre = re.search("nombre:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el nombre
         body = f"¿Hola {nombre} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
-        options = ["Generar Ticket", "Ver Estado Ticket", "comercial"]
+        options = ["Generar Ticket", "Ver Estado Ticket", "Actualizar Ticket"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
         list.append(replyButtonData) 
     
-    elif "comercial" in text or "sistemas" in text or "recursos humanos" in text or "atención al cliente" in text:
-        area = re.search("\\d.(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el area
-        body = f"Perfecto, Por favor selecciona el tipo de ticket que deseas generar:"
-        footer = "Redsis su aliado estratégico"
-        options = ["1.Incidente", "2.Solicitud"]
+    elif "generar ticket" in text:
+        textMessage = text_Message(number,"Buena elección! Por favor ingresa su consulta con el siguiente formato: \n\n*'Ingresar Incidente:  <Ingresa breve descripción del problema>*' \n\n Para que nuestros analistas lo revisen")
+        list.append(textMessage)
 
-        replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
-        replyReaction = replyReaction_Message(number, messageId, "")
-        list.append(replyReaction)
-        list.append(replyButtonData)
-
-    elif "incidente" in text or "solicitud" in text:
-        tipo_ticket = re.search("\\d.(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el tio de ticket
-        body = f"Por favor selecciona la prioridad para tu {tipo_ticket}"
-        footer = "Redsis su aliado estratégico"
-        options = ["1.Bajo", "2.Medio", "3.Alto","4.Urgente"]
-
-        replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
-        replyReaction = replyReaction_Message(number, messageId, "")
-        list.append(replyReaction)
-        list.append(replyButtonData)
-
-    elif "bajo" in text or "medio" in text or "alto" in text or "urgente" in text:
-        prioridad = re.search("\\d.(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la prioridad del ticket
-        textMessage = text_Message(number, f"Perfecto, para crear el ticket por favor ingresa el título de tu {tipo_ticket} usando el siguiente formato\n*title: <Titulo para el Ticket>*")        
-        footer = "Redsis su aliado estratégico" 
-        list.append(textMessage)  
-
-    elif "title:" in text:
-        titulo = re.search("title:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el título del ticket
-        textMessage = text_Message(number, f"Perfecto, para continuar ingresa la descripción de tu {tipo_ticket} usando el siguiente formato\n*description: <Descripción para el Ticket>*")        
-        footer = "Redsis su aliado estratégico" 
-        list.append(textMessage)   
 
     elif "description:" in text:
         description = re.search("description:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la descripción del ticket
