@@ -8,7 +8,7 @@ from datetime import datetime
 from databases import DatabaseManager
 
 #Variables globales para el control del chatbot
-flujo_chat=0
+
 
 def obtener_Mensaje_whatsapp(message):
     if 'type' not in message :
@@ -231,12 +231,11 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     list.append(markRead)
     time.sleep(2)
 
-    if "hola" in text or flujo_chat==0:
-        textMessage = text_Message(number,"Bienvenido al área de soporte técnico Redsis, por favor indicanos tú nombre")        
+    if "hola" in text:
+        textMessage = text_Message(number,"Bienvenido al área de soporte técnico Redsis, por favor indicanos tú nombre usando el siguiente formato\n\nNombre: <Tú Nombre>")        
         list.append(textMessage)
-        flujo_chat+=1
 
-    elif flujo_chat==1:
+    elif "nombre:" in text:
         nombre = re.search("(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el nombre
         body = f"Hola! {nombre} Bienvenido a Soporte Bigdateros. cómo podemos ayudarte hoy?"
         footer = "Equipo Bigdateros"
@@ -246,7 +245,6 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         replyReaction = replyReaction_Message(number, messageId, "馃")
         list.append(replyReaction)
         list.append(replyButtonData)
-        flujo_chat+=1
 
     elif "generar ticket" in text:
         textMessage = text_Message(number,"Buena elecci贸n! Por favor ingresa su consulta con el siguiente formato: \n\n*'Ingresar Incidente:  <Ingresa breve descripci贸n del problema>*' \n\n Para que nuestros analistas lo revisen 馃槉")
@@ -310,7 +308,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     elif "no, gracias." in text:
         textMessage = text_Message(number,"Perfecto! No dudes en contactarnos si tienes m谩s preguntas. 隆Hasta luego! 馃槉")
         list.append(textMessage)
-        flujo_chat=0
+        
     else :
         data = text_Message(number,"Lo siento, no entend铆 lo que dijiste. 驴Quieres que te ayude con alguna de estas opciones?")
         list.append(data)
