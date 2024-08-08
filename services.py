@@ -228,7 +228,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     time.sleep(2)
 
     if "hola" in text:
-        textMessage = "nombre:"+text_Message(number,"Bienvenido, cual es tu nombre")
+        textMessage = text_Message(number,"Bienvenido, cual es tu nombre")
         list.append(textMessage)
 
     elif "nombre:" in text:
