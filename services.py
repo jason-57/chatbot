@@ -228,92 +228,78 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     time.sleep(2)
 
     if "hola" in text:
-        body = "¡Hola! 👋 Bienvenido al área de soporte técnico Redsis, por favor indícanos tu nombre:?"
-        footer = "Redsis, su aliado estratégico."  
-        nombre = textMessage   
-        list.append(textMessage) 
-
-    elif "nombre:" in text:
-        body = f"¡Hola! {nombre}. ¿Cómo podemos ayudarte hoy?"
-        footer = "Redsis, su aliado estratégico."
-        options = ["🆕Generar Nuevo Ticket", "🔎Consultar Ticket"]
+        body = "隆Hola! 馃憢 Bienvenido a Soporte Bigdateros. 驴C贸mo podemos ayudarte hoy?"
+        footer = "Equipo Bigdateros"
+        options = ["馃帿 generar ticket", "馃攳 ver estado ticket", "馃攧 actualizar ticket"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
-        replyReaction = replyReaction_Message(number, messageId, "")
+        replyReaction = replyReaction_Message(number, messageId, "馃")
         list.append(replyReaction)
         list.append(replyButtonData)
-    elif "generar nuevo ticket" in text:
-        body = f"👌Perfecto, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
-        footer = "Redsis, su aliado estratégico."
-        options = ["1.Comercial","2.Sistemas","3.Recursos Humanos","4.Atención Al Cliente"]
-
-        replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
-        replyReaction = replyReaction_Message(number, messageId, "")
-        area = re.search("\\d.(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el area
-        list.append(replyReaction)
-        list.append("area:"+replyButtonData)
-
-    elif "area:" in text:
-        body = f"👌Perfecto, Por favor selecciona el tipo de ticket que deseas generar:"
-        footer = "Redsis, su aliado estratégico."
-        options = ["1.Incidente","2.Solicitud"]
-
-        replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
-        replyReaction = replyReaction_Message(number, messageId, "")
-        tipoticket= re.search("\\d.(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el tipo de incidente
-        list.append(replyReaction)
-        list.append("tipoticket:"+replyButtonData)
-
-    elif "tipoticket:" in text:
-        body = f"👌Perfecto, Selecciona la prioridad para tu solicitud:"
-        footer = "Redsis, su aliado estratégico."
-        options = ["1.Bajo","2.Medio","3.Alto","4.Urgente"]
-
-        replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
-        replyReaction = replyReaction_Message(number, messageId, "")
-        prioridad = re.search("\\d.(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la prioridad
-        list.append(replyReaction)
-        list.append("prioridad:"+replyButtonData)
-
-    elif "prioridad:" in text:
-        textMessage = text_Message(number, f"👌Perfecto, ingresa el título de tu {tipoticket}:")        
-        footer = "Redsis, su aliado estratégico."  
-        titulo=textMessage      
-        list.append("titulo:"+textMessage)
-
-    elif "titulo:" in text:
-        textMessage = text_Message(number, f"👌Perfecto, por favor ingresa una breve descripción de tu {tipoticket}:")        
-        footer = "Redsis, su aliado estratégico."  
-        descripcion=textMessage      
-        list.append("descripcion:"+textMessage)
-
-    elif "descripcion:" in text:
-        description = re.search("descripcion:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la descripción del incidente
+    elif "generar ticket" in text:
+        textMessage = text_Message(number,"Buena elecci贸n! Por favor ingresa su consulta con el siguiente formato: \n\n*'Ingresar Incidente:  <Ingresa breve descripci贸n del problema>*' \n\n Para que nuestros analistas lo revisen 馃槉")
+        list.append(textMessage)
+    elif "ingresar incidente" in text:
+        description = re.search("ingresar incidente:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la descripci贸n del incidente
         created_at = datetime.fromtimestamp(timestamp)  
         ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
 
         db_manager.create_ticket(db_type, conn, ticket_id, 'Nuevo', created_at, number, name, description)  
-        body = f"Muchas gracias por la información, la solicitud fue abierta con el siguiente número de ticket {ticket_id}, con una prioridad {prioridad} y será atendida a la mayor brevedad posible"
-        footer = "Redsis, su aliado estratégico."
-        options = ["✔️Sí", "❌No, gracias"]
+        body = f"Perfecto, se gener贸 el ticket *{ticket_id}*, en breves se estar谩n comunicando contigo. \n\n驴Deseas realizar otra consulta?"
+        footer = "Equipo Bigdateros"
+        options = ["鉁?S铆", "鉀?No, gracias"]
         replyButtonData = buttonReply_Message(number, 
                                               options, 
                                               body, 
                                               footer, "sed4",messageId)
         list.append(replyButtonData)
+    elif "s铆" in text:
+        body = "驴C贸mo podemos ayudarte hoy?"
+        footer = "Equipo Bigdateros"
+        options = ["馃帿 generar ticket", "馃攳 ver estado ticket", "馃攧 actualizar ticket"]
+        replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
+        list.append(replyButtonData)
+    elif "ver estado ticket" in text:
+        textMessage = text_Message(number,"Buen铆sima elecci贸n! Para verificar su estado ingresa el siguiente formato:\n\n*Buscar TKXXX* \n\n ")
+        list.append(textMessage)
+    elif  "buscar tk" in text:
+        # extraemos el id del ticket
+        ticket_id = re.search("buscar (tk.*)", text, re.IGNORECASE).group(1).upper().strip() 
+        status = db_manager.get_ticket(db_type, conn,ticket_id)  
+        if status == None:
+            body = f"Lo siento, no se encontr茅 el ticket *{ticket_id}*.\n\n驴Deseas realizar otra consulta?"
+        else :
+            body =  f"Perfecto, el ticket *{ticket_id}* se encuentra en {status}. \n\n驴Deseas realizar otra consulta?"
+        footer = "Equipo Bigdateros"
+        options = ["鉁?S铆", "鉀?No, gracias"]
+        replyButtonData = buttonReply_Message(number, 
+                                              options, 
+                                              body, 
+                                              footer, "sed4",messageId)
+        list.append(replyButtonData)
+    elif "actualizar ticket" in text:
+        textMessage = text_Message(number,"De acuerdo, Por favor ingresa el siguiente formato:\n\n*Actualizar TKXXX: <Breve descripci贸n a actualizar>*. ")
+        list.append(textMessage)
+    elif  "actualizar tkt" in text:
+        match = re.search("actualizar (tkt.*): (.*)", text, re.IGNORECASE) 
+        ticket_id = match.group(1).upper().strip()
+        descripcion_actualizada = match.group(2).strip()
+        updated = db_manager.update_ticket(db_type, conn, ticket_id, descripcion_actualizada)
 
-    elif "no, gracias" in text:
-        textMessage = text_Message(number,"No dudes en contactarnos si tienes más solicitudes. Hasta luego!")
+        if updated:
+            body = f"Perfecto, se actualiz贸n el ticket *{ticket_id}*. \n\n驴Deseas realizar otra consulta?"
+        else:
+            body = f"Lo siento, no se encontr贸 el ticket *{ticket_id}*.\n\n驴Deseas realizar otra consulta?"
+        footer = "Equipo Bigdateros"
+        options = ["鉁?S铆", "鉀?No, gracias"]
+        replyButtonData = buttonReply_Message(number, options, body, footer, "sed4",messageId)
+        list.append(replyButtonData)
+    elif "no, gracias." in text:
+        textMessage = text_Message(number,"Perfecto! No dudes en contactarnos si tienes m谩s preguntas. 隆Hasta luego! 馃槉")
         list.append(textMessage)
     else :
-        body = "Lo siento, no entendí lo que dijiste. Quieres que te ayude con alguna de estas opciones?"
-        footer = "Redsis, su aliado estratégico."
-        options = ["🆕Generar Nuevo Ticket", "🔎Consultar Ticket"]              
-
-        replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
-        replyReaction = replyReaction_Message(number, messageId, "")
-        list.append(replyReaction)
-        list.append(replyButtonData)
+        data = text_Message(number,"Lo siento, no entend铆 lo que dijiste. 驴Quieres que te ayude con alguna de estas opciones?")
+        list.append(data)
 
     for item in list:
         enviar_Mensaje_whatsapp(item)
