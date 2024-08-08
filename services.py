@@ -237,22 +237,25 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
 
     elif "nombre:" in text:
         nombre = re.search("nombre:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el nombre
-        body = f"¿Hola {nombre} en que podemos ayudarte hoy?"
+        body = f"¿Hola {nombre.capitalize} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
         options = ["Generar Ticket", "Ver Estado Ticket", "Actualizar Ticket"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
-        replyReaction = replyReaction_Message(number, messageId, "🫡")
+        replyReaction = replyReaction_Message(number, messageId, "👍")
         list.append(replyReaction)
         list.append(replyButtonData)
     
     elif "generar ticket" in text:
-        body = f"Perfecto, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
-        footer = "Redsis su aliado estratégico"
-        options = ["Comercial", "Sistemas", "Recursos", "Atención"]
+        #body = f"Perfecto, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
+        #footer = "Redsis su aliado estratégico"
+        #options = ["Comercial", "Sistemas", "Recursos", "Atención"]
+        body = f"2¿Hola {nombre.capitalize} en que podemos ayudarte hoy?"
+        footer = "2Redsis su aliado estratégico"
+        options = ["2Generar Ticket", "Ver Estado Ticket", "Actualizar Ticket"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed2",messageId)
-        replyReaction = replyReaction_Message(number, messageId, "🫡")
+        replyReaction = replyReaction_Message(number, messageId, "👊")
         list.append(replyReaction)
         list.append(replyButtonData)
     
