@@ -217,7 +217,7 @@ def markRead_Message(messageId):
         }
     )
     return data
-
+nombre_test=""
 def administrar_chatbot(text,number, messageId, name, timestamp):
     
     db_manager = DatabaseManager() #instanciamos el objeto
@@ -236,8 +236,8 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         list.append(textMessage)
 
     elif "name:" in text:
-        nombre = (re.search("name:(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
-        body = f"¿Hola {nombre} en que podemos ayudarte hoy?"
+        nombre_test = (re.search("name:(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
+        body = f"¿Hola {nombre_test} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
         options = ["Generar Ticket", "Ver Estado Ticket", "Actualizar Ticket"]
 
@@ -294,7 +294,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
 
         db_manager.create_ticket(db_type, conn, ticket_id, 'Nuevo', created_at, number, name, description)  
-        body = f"Perfecto, se generó el ticket *{ticket_id}*, en breve se estarán comunicando contigo. \n\nDeseas realizar otra consulta?"
+        body = f"Perfecto, {nombre_test} se generó el ticket *{ticket_id}*, en breve se estarán comunicando contigo. \n\nDeseas realizar otra consulta?"
         footer = "Redsis su aliado estratégico"
         options = ["✔️Sí", "❌No, gracias"]
         replyButtonData = buttonReply_Message(number, 
