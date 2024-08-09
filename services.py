@@ -318,7 +318,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         if status == None:
             body = f"Lo siento, no se encontró el ticket *{ticket_id}*.\n\nDeseas realizar otra consulta?"
         else :
-            body =  f"Perfecto, el ticket *{ticket_id}* se encuentra en {status}. \n\nDeseas realizar otra consulta?"
+            body =  f"Perfecto, el ticket *{ticket_id}* se encuentra en {status} acá iría el resto de datos que queramos mostrar por ejemplo lo creó: Jason, en la fecha: 09-08-2024 area: sistemas etc.... \n\nDeseas realizar otra consulta?"
         footer = "Redsis su aliado estratégico"
         options = ["✔️Sí", "❌No, gracias"]
         replyButtonData = buttonReply_Message(number, 
