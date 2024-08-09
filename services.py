@@ -294,7 +294,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
 
         db_manager.create_ticket(db_type, conn, ticket_id, 'Nuevo', created_at, number, name, description)  
-        body = f"Perfecto {nombre}, se generó el ticket *{ticket_id}*, en breve se estarán comunicando contigo. \n\nDeseas realizar otra consulta?"
+        body = f"Perfecto, se generó el ticket *{ticket_id}*, en breve se estarán comunicando contigo. \n\nDeseas realizar otra consulta?"
         footer = "Redsis su aliado estratégico"
         options = ["✔️Sí", "❌No, gracias"]
         replyButtonData = buttonReply_Message(number, 
