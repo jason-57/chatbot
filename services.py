@@ -217,7 +217,7 @@ def markRead_Message(messageId):
         }
     )
     return data
-nombre_test=""
+
 def administrar_chatbot(text,number, messageId, name, timestamp):
     
     db_manager = DatabaseManager() #instanciamos el objeto
@@ -260,14 +260,14 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         area = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el area     
         body = "Perfecto! Por favor selecciona el tipo de ticket que deseas generar"
         footer = "Redsis su aliado estratégico"
-        options = ["Incidente", "Solicitud"]
+        options = ["Incidente", "Requerimiento"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "👍")
         list.append(replyReaction)
         list.append(replyButtonData)
 
-    elif "incidente" in text or "solicitud" in text:   
+    elif "incidente" in text or "requerimiento" in text:   
         tipo_ticket = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el tipo de ticket     
         body = f"Muy bien, ahora selecciona la prioridad para tu {tipo_ticket}:"
         footer = "Redsis su aliado estratégico"
@@ -280,12 +280,12 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         
     elif "baja" in text or "media" in text or "alta" in text:
         prioridad = re.search("(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la prioridad de la solicitud
-        textMessage = text_Message(number,f"Por favor ingresa el encabezado de tu usando el siguiente formato:\n\n*Title: <Título de tu solicitud>*")        
+        textMessage = text_Message(number,f"Por favor ingresa el encabezado de tu solicitud usando el siguiente formato:\n\n*Title: <Título de tu solicitud>*")        
         list.append(textMessage)
         
     elif "title:" in text:
         titulo = re.search("title:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el titulo de la solicitud
-        textMessage = text_Message(number,f"Por favor ingresa una breve descripción de tu  usando el siguiente formato:\n\n*Description: <Descripción de tu solicitud>*")        
+        textMessage = text_Message(number,f"Por favor ingresa una breve descripción de tu solicitud usando el siguiente formato:\n\n*Description: <Descripción de tu solicitud>*")        
         list.append(textMessage)
 
     elif "description:" in text:
@@ -294,7 +294,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
 
         db_manager.create_ticket(db_type, conn, ticket_id, 'Nuevo', created_at, number, name, description)  
-        body = f"Perfecto, {nombre_test} se generó el ticket *{ticket_id}*, en breve se estarán comunicando contigo. \n\nDeseas realizar otra consulta?"
+        body = f"Perfecto, se generó el ticket *{ticket_id}*, en breve se estarán comunicando contigo. \n\nDeseas realizar otra consulta?"
         footer = "Redsis su aliado estratégico"
         options = ["✔️Sí", "❌No, gracias"]
         replyButtonData = buttonReply_Message(number, 
