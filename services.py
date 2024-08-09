@@ -280,12 +280,12 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         
     elif "baja" in text or "media" in text or "alta" in text:
         prioridad = re.search("(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la prioridad de la solicitud
-        textMessage = text_Message(number,f"Por favor ingresa el encabezado de tu  {tipo_ticket} usando el siguiente formato:\n\n*Title: <Título de tu solicitud>*")        
+        textMessage = text_Message(number,f"Por favor ingresa el encabezado de tu usando el siguiente formato:\n\n*Title: <Título de tu solicitud>*")        
         list.append(textMessage)
         
     elif "title:" in text:
         titulo = re.search("title:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el titulo de la solicitud
-        textMessage = text_Message(number,f"Por favor ingresa una breve descripción de tu  {tipo_ticket} usando el siguiente formato:\n\n*Description: <Descripción de tu solicitud>*")        
+        textMessage = text_Message(number,f"Por favor ingresa una breve descripción de tu  usando el siguiente formato:\n\n*Description: <Descripción de tu solicitud>*")        
         list.append(textMessage)
 
     elif "description:" in text:
