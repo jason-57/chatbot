@@ -232,11 +232,11 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     time.sleep(2)
 
     if "hola" in text:
-        textMessage = text_Message(number,"👋Bienvenido al área de soporte técnico Redsis\nPor favor indicanos tú nombre usando el siguiente formato:\n\n*Nombre: <Tú Nombre>*")        
+        textMessage = text_Message(number,"👋Bienvenido al área de soporte técnico Redsis\nPor favor indicanos tú nombre usando el siguiente formato:\n\n*Name: <Tú Nombre>*")        
         list.append(textMessage)
 
-    elif "nombre:" in text:
-        nombre = (re.search("nombre:(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
+    elif "name:" in text:
+        nombre = (re.search("name:(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
         body = f"¿Hola {nombre} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
         options = ["Generar Ticket", "Ver Estado Ticket", "Actualizar Ticket"]
@@ -271,17 +271,18 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         tipo_ticket = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el tipo de ticket     
         body = f"Muy bien, ahora selecciona la prioridad para tu {tipo_ticket}:"
         footer = "Redsis su aliado estratégico"
-        options = ["Bajo", "Medio","Alto"]
+        options = ["Baja", "Media","Alta"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "👍")
         list.append(replyReaction)
         list.append(replyButtonData)
-    
-    elif "bajo" in text or "medio" in text or "alto" in text:
-        textMessage = text_Message(number,f"Para continuar ingresa el encabezado de tu {tipo_ticket} usando el siguiente formato:\n\n*Title: <Título de tu solicitud>*")        
+        
+    elif "baja" in text or "media" in text or "alta" in text:
+        prioridad = re.search("(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la prioridad de la solicitud
+        textMessage = text_Message(number,f"Por favor ingresa el encabezado de tu  {tipo_ticket} usando el siguiente formato:\n\n*Title: <Título de tu solicitud>*")        
         list.append(textMessage)
-
+        
     elif "title:" in text:
         titulo = re.search("title:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el titulo de la solicitud
         textMessage = text_Message(number,f"Por favor ingresa una breve descripción de tu  {tipo_ticket} usando el siguiente formato:\n\n*Description: <Descripción de tu solicitud>*")        
