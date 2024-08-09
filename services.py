@@ -269,7 +269,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
 
     elif "incidente" in text or "solicitud" in text:   
         tipo_ticket = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el tipo de ticket     
-        body = "Muy bien, ahora selecciona la prioridad para tu solicitud:"
+        body = f"Muy bien, ahora selecciona la prioridad para tu {tipo_ticket}:"
         footer = "Redsis su aliado estratégico"
         options = ["Bajo", "Medio","Alto"]
 
