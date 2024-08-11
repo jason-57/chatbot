@@ -3,6 +3,7 @@ import sett
 import json
 import time
 import re
+import app
 
 from datetime import datetime
 from databases import DatabaseManager
@@ -236,7 +237,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         list.append(textMessage)
 
     elif "name:" in text:
-        nombre_test = (re.search("name:(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
+        app.name_glpi = (re.search("name:(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
         body = f"¿Hola {nombre_test} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
         options = ["Generar Ticket", "Ver Estado Ticket", "Actualizar Ticket"]
@@ -247,7 +248,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         list.append(replyButtonData)
 
     elif "generar ticket" in text:        
-        body = "Buena elección! Perfecto, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
+        body = f"Buena elección {app.name_glpi}! Perfecto, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
         footer = "Redsis su aliado estratégico"
         options = ["Comercial", "Sistemas", "Jurídica"]
 

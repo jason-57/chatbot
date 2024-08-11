@@ -3,7 +3,7 @@ import sett
 import services
 
 app = Flask(__name__)
-
+name_glpi=""
 @app.route('/webhook', methods=['GET'])
 def verificar_token():
     try:
@@ -20,6 +20,7 @@ def verificar_token():
 @app.route('/webhook', methods=['POST'])
 def recibir_mensajes():
     try:
+        
         body = request.get_json()
         entry = body['entry'][0]
         changes = entry['changes'][0]
