@@ -4,6 +4,14 @@ import services
 
 app = Flask(__name__)
 name_glpi=""
+area_glpi=""
+prioridad_glpi=""
+tipoticket_glpi=""
+titulo_glpi=""
+descripcion_glpi=""
+fechacreacion_glpi=""
+actualizacion_glpi=""
+
 @app.route('/webhook', methods=['GET'])
 def verificar_token():
     try:
