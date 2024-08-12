@@ -238,7 +238,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
 
     elif "name:" in text:
         app.name_glpi = (re.search("name:(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
-        body = f"¿Hola {app.name_glpi} en que podemos ayudarte hoy?"
+        body = f"¿Hola,  {app.name_glpi} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
         options = ["Generar Ticket", "Ver Estado Ticket", "Actualizar Ticket"]
 
