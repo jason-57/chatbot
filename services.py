@@ -233,7 +233,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     time.sleep(2)
 
     if "hola" in text:
-        textMessage = text_Message(number,"👋Bienvenido al área de soporte técnico Redsis\nPor favor indicanos tú nombre usando el siguiente formato:\n\n*Name: <Tú Nombre>*")        
+        textMessage = text_Message(number,"👋Bienvenido al área de soporte técnico Redsis\nPor favor indícanos tú nombre usando el siguiente formato:\n\n*Name: <Tú Nombre>*")        
         list.append(textMessage)
 
     elif "name:" in text:
@@ -259,7 +259,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     
     elif "comercial" in text or "sistemas" in text or "jurídica" in text:   
         app.area_glpi = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el area     
-        body = "Ahora por favor indícanos el tipo de ticket que deseas generar"
+        body = f"{app.name_glpi} ahora por favor indícanos el tipo de ticket que deseas generar"
         footer = "Redsis su aliado estratégico"
         options = ["Incidente", "Requerimiento"]
 
@@ -270,7 +270,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
 
     elif "incidente" in text or "requerimiento" in text:   
         app.tipoticket_glpi = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el tipo de ticket     
-        body = f"Muy bien👍, ahora selecciona la prioridad para tu {app.tipoticket_glpi}:"
+        body = f"Perfectp! Ahora selecciona la prioridad para tu {app.tipoticket_glpi} según la urgencia con la que debe ser atendida:"
         footer = "Redsis su aliado estratégico"
         options = ["Baja", "Media","Alta"]
 
@@ -295,7 +295,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
 
         db_manager.create_ticket(db_type, conn, ticket_id, 'Nuevo', app.fechacreacion_glpi, number, name, app.descripcion_glpi)  
-        body = f"{app.name_glpi} se generó el ticket *{ticket_id}* para tú *{app.tipoticket_glpi}* con título:*{app.titulo_glpi}* satisfactoriamente.👍 \n\nDeseas realizar otra consulta?"
+        body = f"{app.name_glpi} se generó el ticket *{ticket_id}* para tú *{app.tipoticket_glpi}* \"*{app.titulo_glpi}*\" satisfactoriamente.👍 \n\nDeseas realizar otra consulta?"
         footer = "Redsis su aliado estratégico"
         options = ["✔️Sí", "❌No, gracias"]
         replyButtonData = buttonReply_Message(number, 
@@ -319,7 +319,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         if status == None:
             body = f"{app.name_glpi} lo siento, no se encontró el ticket *{ticket_id}*.\n\nDeseas realizar otra consulta?"
         else :
-            body =  f"{app.name_glpi} el ticket *{ticket_id}* creado en la fecha *{app.fechacreacion_glpi}* se encuentra en estado: *{status}* y nuestros técnicos estan trabajando para solucionarlo.\n\nDeseas realizar otra consulta?"
+            body =  f"{app.name_glpi} el ticket *{ticket_id}* con asunto \" {app.titulo_glpi}\" creado en la fecha *{app.fechacreacion_glpi}* se encuentra en estado: *{status}* y nuestros técnicos estan trabajando para solucionarlo.\n\nDeseas realizar otra consulta?"
         footer = "Redsis su aliado estratégico"
         options = ["✔️Sí", "❌No, gracias"]
         replyButtonData = buttonReply_Message(number, 
