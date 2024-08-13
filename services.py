@@ -232,14 +232,14 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     list.append(markRead)
     time.sleep(2)
 
-    if app.flujo_glpi==0:
+    if "hola" in text:
         textMessage = text_Message(number,"👋Bienvenido al área de soporte técnico Redsis\nPor favor indícanos tú nombre usando el siguiente formato:\n\n*Name: <Tú Nombre>*")        
         list.append(textMessage)
         app.flujo_glpi=1
 
-    elif app.flujo_glpi==1:
-        #app.name_glpi = (re.search("name:(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
-        app.name_glpi = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
+    elif "name:" in text:
+        app.name_glpi = (re.search("name:(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
+        #app.name_glpi = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
         body = f"¿Hola, {app.name_glpi} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
         options = ["Generar Ticket", "Ver Estado Ticket"]
@@ -250,10 +250,10 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         list.append(replyButtonData)
         app.flujo_glpi=2
 
-    elif app.flujo_glpi==2:        
+    elif "generar ticket" in text or "ver estado ticket" in text:        
         body = f"Perfecto {app.name_glpi}, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
         footer = "Redsis su aliado estratégico"
-        options = ["Comercial", "Sistemas", "Jurídica","Comercial", "Sistemas", "Jurídica"]
+        options = ["Comercial", "Sistemas", "Jurídica","Financiera", "Soporte"]
         
         replyListData = listReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "👍")
