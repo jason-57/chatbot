@@ -221,9 +221,9 @@ def markRead_Message(messageId):
 
 def administrar_chatbot(text,number, messageId, name, timestamp):
     
-    #db_manager = DatabaseManager() #instanciamos el objeto
-    #db_type = 'postgresql' # previamente configuramos solo mysql y postgresql
-    #conn = db_manager.connect(db_type)
+    db_manager = DatabaseManager() #instanciamos el objeto
+    db_type = 'postgresql' # previamente configuramos solo mysql y postgresql
+    conn = db_manager.connect(db_type)
     text = text.lower() #mensaje que envio el usuario
     list = []
     print("mensaje del usuario: ",text)
@@ -253,14 +253,14 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     elif "generar ticket" in text or "ver estado ticket" in text:        
         body = f"Perfecto {app.name_glpi}, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
         footer = "Redsis su aliado estratégico"
-        options = ["Comercial", "Sistemas", "Jurídica","Financiera", "Soporte"]
+        options = ["Comercial", "Sistemas", "Jurídica","Financiera", "Recursos Humanos"]
         
         replyListData = listReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "👍")
         list.append(replyReaction)
         list.append(replyListData)
     
-    elif "comercial" in text or "sistemas" in text or "jurídica" in text:   
+    elif "comercial" in text or "sistemas" in text or "jurídica" in text or "financiera" in text or "recursos humanos" in text:   
         app.area_glpi = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el area     
         body = f"{app.name_glpi} ahora por favor indícanos el tipo de ticket que deseas generar"
         footer = "Redsis su aliado estratégico"
@@ -284,20 +284,20 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         
     elif "baja" in text or "media" in text or "alta" in text:
         app.prioridad_glpi = re.search("(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la prioridad de la solicitud
-        textMessage = text_Message(number,f"{app.name_glpi} por favor ingresa el encabezado de tu {app.tipoticket_glpi} usando el siguiente formato:\n\n*Title: <Título de tu {app.tipoticket_glpi}>*")        
+        textMessage = text_Message(number,f"{app.name_glpi} ingresa el encabezado de tu {app.tipoticket_glpi} usando el siguiente formato:\n\n*Title: <Título de tu {app.tipoticket_glpi}>*")        
         list.append(textMessage)
         
     elif "title:" in text:
         app.titulo_glpi = re.search("title:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el titulo de la solicitud
-        textMessage = text_Message(number,f"Gracias {app.name_glpi}, ahora ingresa una breve descripción de tu solicitud usando el siguiente formato:\n\n*Description: <Descripción de tu {app.tipoticket_glpi}>*")        
+        textMessage = text_Message(number,f"{app.name_glpi}, ahora ingresa una breve descripción de tu solicitud usando el siguiente formato:\n\n*Description: <Descripción de tu {app.tipoticket_glpi}>*")        
         list.append(textMessage)
 
     elif "description:" in text:
         app.descripcion_glpi = re.search("description:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la descripción de la solicitud
         app.fechacreacion_glpi = datetime.fromtimestamp(timestamp)  
-        #ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
+        ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
 
-        #db_manager.create_ticket(db_type, conn, ticket_id, 'Nuevo', app.fechacreacion_glpi, number, name, app.descripcion_glpi)  
+        db_manager.create_ticket(db_type, conn, ticket_id, 'Nuevo', app.fechacreacion_glpi, number, name, app.descripcion_glpi)  
         body = f"{app.name_glpi} se generó el ticket *{ticket_id}* para tú *{app.tipoticket_glpi}* \"*{app.titulo_glpi}*\" satisfactoriamente.👍 \n\nDeseas realizar otra consulta?"
         footer = "Redsis su aliado estratégico"
         options = ["✔️Sí", "❌No, gracias"]
@@ -330,23 +330,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
                                               body, 
                                               footer, "sed4",messageId)
         list.append(replyButtonData)
-    elif "actualizar ticket" in text:
-        textMessage = text_Message(number,f"De acuerdo, para actualizar la descripción del ticket por favor ingresa el siguiente formato:\n\n*Actualizar TKTXXX: <Breve descripción a actualizar>*. ")
-        list.append(textMessage)
-    elif  "actualizar tkt" in text:
-        app.actualizacion_glpi = re.search("actualizar (tkt.*): (.*)", text, re.IGNORECASE) 
-        ticket_id = app.actualizacion_glpi.group(1).upper().strip()
-        descripcion_actualizada = app.actualizacion_glpi.group(2).strip()
-        updated = db_manager.update_ticket(db_type, conn, ticket_id, descripcion_actualizada)
 
-        if updated:
-            body = f"Perfecto, se actualizó el ticket *{ticket_id}* con la siguiente descripción: *{app.actualizacion_glpi}*. \n\nDeseas realizar otra consulta?"
-        else:
-            body = f"{app.name_glpi} lo siento, no se encontró el ticket *{ticket_id}*.\n\nDeseas realizar otra consulta?"
-        footer = "Redsis su aliado estratégico"
-        options = ["✔️Sí", "❌No, gracias"]
-        replyButtonData = buttonReply_Message(number, options, body, footer, "sed4",messageId)
-        list.append(replyButtonData)
     elif "no, gracias" in text:
         textMessage = text_Message(number,"Perfecto! No dudes en contactarnos si tienes más preguntas.\n 🖐️Hasta luego!")
         list.append(textMessage)
