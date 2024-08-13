@@ -232,11 +232,12 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     list.append(markRead)
     time.sleep(2)
 
-    if "hola" in text:
+    if app.flujo_glpi==0:
         textMessage = text_Message(number,"👋Bienvenido al área de soporte técnico Redsis\nPor favor indícanos tú nombre usando el siguiente formato:\n\n*Name: <Tú Nombre>*")        
         list.append(textMessage)
+        app.flujo_glpi=1
 
-    elif "name:" in text:
+    elif app.flujo_glpi==1:
         app.name_glpi = (re.search("name:(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
         body = f"¿Hola, {app.name_glpi} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
@@ -246,8 +247,9 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         replyReaction = replyReaction_Message(number, messageId, "👍")
         list.append(replyReaction)
         list.append(replyButtonData)
+        app.flujo_glpi=2
 
-    elif "generar ticket" in text:        
+    elif app.flujo_glpi==2:        
         body = f"Perfecto {app.name_glpi}, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
         footer = "Redsis su aliado estratégico"
         options = ["Comercial", "Sistemas", "Jurídica","Comercial", "Sistemas", "Jurídica"]
@@ -270,7 +272,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
 
     elif "incidente" in text or "requerimiento" in text:   
         app.tipoticket_glpi = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el tipo de ticket     
-        body = f"Perfectp! Ahora selecciona la prioridad para tu {app.tipoticket_glpi} según la urgencia con la que debe ser atendida:"
+        body = f"Perfecto! Ahora selecciona la prioridad para tu {app.tipoticket_glpi} según la urgencia con la que debe ser atendida:"
         footer = "Redsis su aliado estratégico"
         options = ["Baja", "Media","Alta"]
 
