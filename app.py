@@ -14,6 +14,9 @@ descripcion_glpi=""
 fechacreacion_glpi=""
 actualizacion_glpi=""
 
+#Variable del flujo
+flujo_glpi=0
+
 @app.route('/webhook', methods=['GET'])
 def verificar_token():
     try:
