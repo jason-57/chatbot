@@ -221,9 +221,9 @@ def markRead_Message(messageId):
 
 def administrar_chatbot(text,number, messageId, name, timestamp):
     
-    db_manager = DatabaseManager() #instanciamos el objeto
-    db_type = 'postgresql' # previamente configuramos solo mysql y postgresql
-    conn = db_manager.connect(db_type)
+    #db_manager = DatabaseManager() #instanciamos el objeto
+    #db_type = 'postgresql' # previamente configuramos solo mysql y postgresql
+    #conn = db_manager.connect(db_type)
     text = text.lower() #mensaje que envio el usuario
     list = []
     print("mensaje del usuario: ",text)
@@ -295,9 +295,9 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     elif "description:" in text:
         app.descripcion_glpi = re.search("description:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la descripción de la solicitud
         app.fechacreacion_glpi = datetime.fromtimestamp(timestamp)  
-        ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
+        #ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
 
-        db_manager.create_ticket(db_type, conn, ticket_id, 'Nuevo', app.fechacreacion_glpi, number, name, app.descripcion_glpi)  
+        #db_manager.create_ticket(db_type, conn, ticket_id, 'Nuevo', app.fechacreacion_glpi, number, name, app.descripcion_glpi)  
         body = f"{app.name_glpi} se generó el ticket *{ticket_id}* para tú *{app.tipoticket_glpi}* \"*{app.titulo_glpi}*\" satisfactoriamente.👍 \n\nDeseas realizar otra consulta?"
         footer = "Redsis su aliado estratégico"
         options = ["✔️Sí", "❌No, gracias"]
