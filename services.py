@@ -235,7 +235,6 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     if "hola" in text:
         textMessage = text_Message(number,"👋Bienvenido al área de soporte técnico Redsis\nPor favor indícanos tú nombre usando el siguiente formato:\n\n*Name: <Tú Nombre>*")        
         list.append(textMessage)
-        app.flujo_glpi=1
 
     elif "name:" in text:
         app.name_glpi = (re.search("name:(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
@@ -248,9 +247,8 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         replyReaction = replyReaction_Message(number, messageId, "👍")
         list.append(replyReaction)
         list.append(replyButtonData)
-        app.flujo_glpi=2
 
-    elif "generar ticket" in text or "ver estado ticket" in text:        
+    elif "generar ticket" in text:        
         body = f"Perfecto {app.name_glpi}, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
         footer = "Redsis su aliado estratégico"
         options = ["Comercial", "Sistemas", "Jurídica","Financiera", "Recursos Humanos"]
