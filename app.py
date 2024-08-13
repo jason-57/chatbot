@@ -3,6 +3,8 @@ import sett
 import services
 
 app = Flask(__name__)
+
+#Variables globales
 name_glpi=""
 area_glpi=""
 prioridad_glpi=""

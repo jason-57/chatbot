@@ -240,7 +240,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         app.name_glpi = (re.search("name:(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
         body = f"¿Hola, {app.name_glpi} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
-        options = ["Generar Ticket", "Ver Estado Ticket", "Actualizar Ticket"]
+        options = ["Generar Ticket", "Ver Estado Ticket"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "👍")
@@ -250,12 +250,12 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     elif "generar ticket" in text:        
         body = f"Perfecto {app.name_glpi}, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
         footer = "Redsis su aliado estratégico"
-        options = ["Comercial", "Sistemas", "Jurídica"]
-
-        replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
+        options = ["Comercial", "Sistemas", "Jurídica","Comercial", "Sistemas", "Jurídica"]
+        
+        replyListData = listReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "👍")
         list.append(replyReaction)
-        list.append(replyButtonData)
+        list.append(replyListData)
     
     elif "comercial" in text or "sistemas" in text or "jurídica" in text:   
         app.area_glpi = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el area     
