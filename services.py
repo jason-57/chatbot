@@ -237,7 +237,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         list.append(textMessage)
 
     elif "name:" in text:
-        app.name_glpi = (re.search("name:(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
+        app.session["name_glpi"] = (re.search("name:(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
         #app.name_glpi = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el nombre
         body = f"¿Hola, {app.name_glpi} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
@@ -259,7 +259,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         list.append(replyListData)
     
     elif "comercial" in text or "sistemas" in text or "jurídica" in text or "financiera" in text or "recursos humanos" in text:   
-        app.area_glpi = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el area     
+        app.session["area_glpi"] = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el area     
         body = f"{app.name_glpi} ahora por favor indícanos el tipo de ticket que deseas generar"
         footer = "Redsis su aliado estratégico"
         options = ["Incidente", "Requerimiento"]
@@ -270,7 +270,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         list.append(replyButtonData)
 
     elif "incidente" in text or "requerimiento" in text:   
-        app.tipoticket_glpi = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el tipo de ticket     
+        app.session["prioridad_glpi"] = (re.search("(.*)", text, re.IGNORECASE).group(1).strip()).capitalize()  # extraemos el tipo de ticket     
         body = f"Perfecto! Ahora selecciona la prioridad para tu {app.tipoticket_glpi} según la urgencia con la que debe ser atendida:"
         footer = "Redsis su aliado estratégico"
         options = ["Baja", "Media","Alta"]
@@ -281,18 +281,18 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         list.append(replyButtonData)
         
     elif "baja" in text or "media" in text or "alta" in text:
-        app.prioridad_glpi = re.search("(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la prioridad de la solicitud
+        app.session["tipoticket_glpi"] = re.search("(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la prioridad de la solicitud
         textMessage = text_Message(number,f"{app.name_glpi} ingresa el encabezado de tu {app.tipoticket_glpi} usando el siguiente formato:\n\n*Title: <Título de tu {app.tipoticket_glpi}>*")        
         list.append(textMessage)
         
     elif "title:" in text:
-        app.titulo_glpi = re.search("title:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el titulo de la solicitud
+        app.session["titulo_glpi"] = re.search("title:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos el titulo de la solicitud
         textMessage = text_Message(number,f"{app.name_glpi}, ahora ingresa una breve descripción de tu solicitud usando el siguiente formato:\n\n*Description: <Descripción de tu {app.tipoticket_glpi}>*")        
         list.append(textMessage)
 
     elif "description:" in text:
-        app.descripcion_glpi = re.search("description:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la descripción de la solicitud
-        app.fechacreacion_glpi = datetime.fromtimestamp(timestamp)  
+        app.session["descripcion_glpi"] = re.search("description:(.*)", text, re.IGNORECASE).group(1).strip()  # extraemos la descripción de la solicitud
+        app.session["fechacreacion_glpi"] = datetime.fromtimestamp(timestamp)  
         ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
 
         db_manager.create_ticket(db_type, conn, ticket_id, 'Nuevo', app.fechacreacion_glpi, number, name, app.descripcion_glpi)  

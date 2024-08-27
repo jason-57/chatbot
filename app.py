@@ -1,18 +1,8 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, session
 import sett 
 import services
 
 app = Flask(__name__)
-
-#Variables globales
-name_glpi=""
-area_glpi=""
-prioridad_glpi=""
-tipoticket_glpi=""
-titulo_glpi=""
-descripcion_glpi=""
-fechacreacion_glpi=""
-actualizacion_glpi=""
 
 @app.route('/webhook', methods=['GET'])
 def verificar_token():
@@ -28,10 +18,8 @@ def verificar_token():
         return e,403
     
 @app.route('/webhook', methods=['POST'])
-def recibir_mensajes():   
-    
-    try:
-        
+def recibir_mensajes():       
+    try:              
         body = request.get_json()
         entry = body['entry'][0]
         changes = entry['changes'][0]
@@ -43,6 +31,14 @@ def recibir_mensajes():
         name = contacts['profile']['name']
         text = services.obtener_Mensaje_whatsapp(message)
         timestamp = int(message['timestamp'])
+        session["name_glpi"]=services.name_glpi
+        session["area_glpi"]=services.area_glpi
+        session["prioridad_glpi"]=services.tipoticket_glpi
+        session["tipoticket_glpi"]=services.prioridad_glpi
+        session["titulo_glpi"]=services.titulo_glpi
+        session["descripcion_glpi"]=services.descripcion_glpi
+        session["fechacreacion_glpi"]=services.fechacreacion_glpi
+
 
         services.administrar_chatbot(text, number,messageId,name,timestamp)
         return 'enviado'
