@@ -14,8 +14,6 @@ descripcion_glpi=""
 fechacreacion_glpi=""
 actualizacion_glpi=""
 
-#Variable del flujo
-
 @app.route('/webhook', methods=['GET'])
 def verificar_token():
     try:
@@ -30,7 +28,8 @@ def verificar_token():
         return e,403
     
 @app.route('/webhook', methods=['POST'])
-def recibir_mensajes():
+def recibir_mensajes():   
+    
     try:
         
         body = request.get_json()
