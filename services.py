@@ -226,18 +226,26 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     conn = db_manager.connect(db_type)
     text = text.lower() #mensaje que envio el usuario
     list = []
-    print("mensaje del usuario: ",text)
-    print(app.dict_sesiones)
-    print(number)
 
     markRead = markRead_Message(messageId)
     list.append(markRead)
     time.sleep(1)
 
     if app.dict_sesiones[str(number)]['flujo'] == 0:
-        textMessage = text_Message(number,"👋Bienvenido al área de soporte técnico Redsis\nPor favor indícanos tú nombre usando el siguiente formato:\n\n*Name: <Tú Nombre>*")        
+        textMessage = text_Message(number,"👋Bienvenido al área de soporte técnico Redsis\nPor favor indícanos tú nombre\n")        
         list.append(textMessage)   
+        app.dict_sesiones[str(number)]['flujo']=1
     
+    elif app.dict_sesiones[str(number)]['flujo'] == 1:        
+        app.dict_sesiones[str(number)]['name_glpi'] = text.capitalize()  #extraemos el nombre        
+        body = f"¿Hola, {app.dict_sesiones[str(number)]['name_glpi']} en que podemos ayudarte hoy?"
+        footer = "Redsis su aliado estratégico"
+        options = ["Generar Ticket", "Ver Estado Ticket"]
+
+        replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
+        replyReaction = replyReaction_Message(number, messageId, "👍")
+        list.append(replyReaction)
+        list.append(replyButtonData)
 
     for item in list:
         enviar_Mensaje_whatsapp(item)
