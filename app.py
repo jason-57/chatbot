@@ -1,8 +1,30 @@
 from flask import Flask, request, render_template, session
+from flask_session import Session
+from flask_sqlalchemy import SQLAlchemy
 import sett 
 import services
 
 app = Flask(__name__)
+app.config['SECRET_KEY']= 'mysecret'
+app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:///db.sqlite3'
+app.config['SESSION_TYPE']= 'sqlalchemy'
+
+db =SQLAlchemy(app)
+
+app.config['SESSION_SQLALCHEMY'] = db
+
+sess = Session(app)
+
+db.create_all()
+
+name_glpi = ''
+area_glpi = ''
+prioridad_glpi = ''
+tipoticket_glpi = ''
+titulo_glpi = ''
+descripcion_glpi = ''
+fechacreacion_glpi = ''
+
 
 @app.route('/webhook', methods=['GET'])
 def verificar_token():
@@ -30,15 +52,8 @@ def recibir_mensajes():
         contacts = value['contacts'][0]
         name = contacts['profile']['name']
         text = services.obtener_Mensaje_whatsapp(message)
-        timestamp = int(message['timestamp'])
-        session["name_glpi"]=services.name_glpi
-        session["area_glpi"]=services.area_glpi
-        session["prioridad_glpi"]=services.tipoticket_glpi
-        session["tipoticket_glpi"]=services.prioridad_glpi
-        session["titulo_glpi"]=services.titulo_glpi
-        session["descripcion_glpi"]=services.descripcion_glpi
-        session["fechacreacion_glpi"]=services.fechacreacion_glpi
-
+        timestamp = int(message['timestamp'])  
+        session['sesion'] = str(number)        
 
         services.administrar_chatbot(text, number,messageId,name,timestamp)
         return 'enviado'
