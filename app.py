@@ -15,7 +15,7 @@ app.config['SESSION_SQLALCHEMY'] = db
 
 sess = Session(app)
 
-db.create_all()
+#db.create_all()
 
 name_glpi = ''
 area_glpi = ''
