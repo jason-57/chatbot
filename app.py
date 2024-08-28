@@ -37,6 +37,7 @@ def recibir_mensajes():
         name = contacts['profile']['name']
         text = services.obtener_Mensaje_whatsapp(message)
         timestamp = int(message['timestamp'])
+        print(number)
         if str(number) in dict_sesiones.keys():
             services.administrar_chatbot(text, number,messageId,name,timestamp)
             return 'enviado'
