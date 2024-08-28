@@ -238,7 +238,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             textMessage = text_Message(number,"👋Bienvenido al área de soporte técnico Redsis\nPor favor indícanos tú nombre usando el siguiente formato:\n\n*Name: <Tú Nombre>*")        
             list.append(textMessage)
         case 1:
-            body = f"¿Hola, {app.name_glpi} en que podemos ayudarte hoy?"
+            body = f"¿Hola, {app.dict_sesiones[str(number)]['name_glpi']} en que podemos ayudarte hoy?"
             footer = "Redsis su aliado estratégico"
             options = ["Generar Ticket", "Ver Estado Ticket"]
 
@@ -247,7 +247,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(replyReaction)
             list.append(replyButtonData)
         case 2:
-            body = f"Perfecto {app.name_glpi}, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
+            body = f"Perfecto {app.dict_sesiones[str(number)]['name_glpi']}, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
             footer = "Redsis su aliado estratégico"
             options = ["Comercial", "Sistemas", "Jurídica","Financiera", "Recursos Humanos"]
             
@@ -256,7 +256,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(replyReaction)
             list.append(replyListData)
         case 3:
-            body = f"{app.name_glpi} ahora por favor indícanos el tipo de ticket que deseas generar"
+            body = f"{app.dict_sesiones[str(number)]['name_glpi']} ahora por favor indícanos el tipo de ticket que deseas generar"
             footer = "Redsis su aliado estratégico"
             options = ["Incidente", "Requerimiento"]
 
@@ -265,7 +265,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(replyReaction)
             list.append(replyButtonData)
         case 4:
-            body = f"Perfecto! Ahora selecciona la prioridad para tu {app.tipoticket_glpi} según la urgencia con la que debe ser atendida:"
+            body = f"Perfecto! Ahora selecciona la prioridad para tu {app.dict_sesiones[str(number)]['tipoticket_glpi']} según la urgencia con la que debe ser atendida:"
             footer = "Redsis su aliado estratégico"
             options = ["Baja", "Media","Alta"]
 
@@ -274,34 +274,34 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(replyReaction)
             list.append(replyButtonData)
         case 5:
-            textMessage = text_Message(number,f"{app.name_glpi} ingresa el encabezado de tu {app.tipoticket_glpi} usando el siguiente formato:\n\n*Title: <Título de tu {app.tipoticket_glpi}>*")        
+            textMessage = text_Message(number,f"{app.dict_sesiones[str(number)]['name_glpi']} ingresa el encabezado de tu {app.dict_sesiones[str(number)]['tipoticket_glpi']} usando el siguiente formato:\n\n*Title: <Título de tu {app.dict_sesiones[str(number)]['tipoticket_glpi']}>*")        
             list.append(textMessage)
         case 6:
-            textMessage = text_Message(number,f"{app.name_glpi}, ahora ingresa una breve descripción de tu solicitud usando el siguiente formato:\n\n*Description: <Descripción de tu {app.tipoticket_glpi}>*")        
+            textMessage = text_Message(number,f"{app.dict_sesiones[str(number)]['name_glpi']}, ahora ingresa una breve descripción de tu solicitud usando el siguiente formato:\n\n*Description: <Descripción de tu {app.dict_sesiones[str(number)]['tipoticket_glpi']}>*")        
             list.append(textMessage)
         case 7:
             ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
-            db_manager.create_ticket(db_type, conn, ticket_id, 'Nuevo', app.fechacreacion_glpi, number, name, app.descripcion_glpi)  
-            body = f"{app.name_glpi} se generó el ticket *{ticket_id}* para tú *{app.tipoticket_glpi}* \"*{app.titulo_glpi}*\" satisfactoriamente.👍 \n\nDeseas realizar otra consulta?"
+            db_manager.create_ticket(db_type, conn, ticket_id, 'Nuevo', app.dict_sesiones[str(number)]['fechacreacion_glpi'], number, name, app.dict_sesiones[str(number)]['descripcion_glpi'])  
+            body = f"{app.dict_sesiones[str(number)]['name_glpi']} se generó el ticket *{ticket_id}* para tú *{app.dict_sesiones[str(number)]['tipoticket_glpi']}* \"*{app.dict_sesiones[str(number)]['titulo_glpi']}*\" satisfactoriamente.👍 \n\nDeseas realizar otra consulta?"
             footer = "Redsis su aliado estratégico"
             options = ["✔️Sí", "❌No, gracias"]
             replyButtonData = buttonReply_Message(number, options, body, footer, "sed4",messageId)
             list.append(replyButtonData)
         case 8:
-            body = f"{app.name_glpi} indicanos en que otra cosa podemos ayudarte hoy?"
+            body = f"{app.dict_sesiones[str(number)]['name_glpi']} indicanos en que otra cosa podemos ayudarte hoy?"
             footer = "Redsis su aliado estratégico"
             options = ["generar ticket", "ver estado ticket", "actualizar ticket"]
             replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
             list.append(replyButtonData)
         case 9: #Ver estado Ticket
-            textMessage = text_Message(number,f"{app.name_glpi} para verificar el estado de tu ticket ingresa su numero usando el siguiente formato:\n\n*Buscar TKTXXX* \n\n ")
+            textMessage = text_Message(number,f"{app.dict_sesiones[str(number)]['name_glpi']} para verificar el estado de tu ticket ingresa su numero usando el siguiente formato:\n\n*Buscar TKTXXX* \n\n ")
             list.append(textMessage)
         case 10:
             status = db_manager.get_ticket(db_type, conn,ticket_id)  
             if status == None:
-                body = f"{app.name_glpi} lo siento, no se encontró el ticket *{ticket_id}*.\n\nDeseas realizar otra consulta?"
+                body = f"{app.dict_sesiones[str(number)]['name_glpi']} lo siento, no se encontró el ticket *{ticket_id}*.\n\nDeseas realizar otra consulta?"
             else :
-                body =  f"{app.name_glpi} el ticket *{ticket_id}* con asunto \" {app.titulo_glpi}\" creado en la fecha *{app.fechacreacion_glpi}* se encuentra en estado: *{status}* y nuestros técnicos estan trabajando para solucionarlo.\n\nDeseas realizar otra consulta?"
+                body =  f"{app.dict_sesiones[str(number)]['name_glpi']} el ticket *{ticket_id}* con asunto \" {app.dict_sesiones[str(number)]['titulo_glpi']}\" creado en la fecha *{app.dict_sesiones[str(number)]['fechacreacion_glpi']}* se encuentra en estado: *{status}* y nuestros técnicos estan trabajando para solucionarlo.\n\nDeseas realizar otra consulta?"
             footer = "Redsis su aliado estratégico"
             options = ["✔️Sí", "❌No, gracias"]
             replyButtonData = buttonReply_Message(number, options, body, footer, "sed4",messageId)
