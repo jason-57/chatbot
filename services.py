@@ -227,6 +227,8 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     text = text.lower() #mensaje que envio el usuario
     list = []
     print("mensaje del usuario: ",text)
+    print(app.dict_sesiones)
+    print(number)
 
     markRead = markRead_Message(messageId)
     list.append(markRead)
@@ -235,7 +237,6 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     if app.dict_sesiones[str(number)]['flujo'] == 0:
         textMessage = text_Message(number,"👋Bienvenido al área de soporte técnico Redsis\nPor favor indícanos tú nombre usando el siguiente formato:\n\n*Name: <Tú Nombre>*")        
         list.append(textMessage)   
-        app.dict_sesiones[str(number)]['flujo']= 1
     
 
     for item in list:

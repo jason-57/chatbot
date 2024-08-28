@@ -9,7 +9,7 @@ dict_sesiones={}
 def generar_dict(numero):
     dict_sesiones[str(numero)] = {"flujo": 0, "name_glpi": "", "area_glpi": "", "prioridad_glpi": "", "tipoticket_glpi": "", "titulo_glpi": "", "descripcion_glpi": "", "fechacreacion_glpi": "", }
 
-print(dict_sesiones)
+
 @app.route('/webhook', methods=['GET'])
 def verificar_token():
     try:
@@ -37,7 +37,7 @@ def recibir_mensajes():
         name = contacts['profile']['name']
         text = services.obtener_Mensaje_whatsapp(message)
         timestamp = int(message['timestamp'])
-        print(number)
+        
         if str(number) in dict_sesiones.keys():
             services.administrar_chatbot(text, number,messageId,name,timestamp)
             return 'enviado'
