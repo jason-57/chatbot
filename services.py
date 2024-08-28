@@ -246,6 +246,8 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         replyReaction = replyReaction_Message(number, messageId, "👍")
         list.append(replyReaction)
         list.append(replyButtonData)
+        app.dict_sesiones[str(number)]['flujo']=0
+        app.dict_sesiones.clear()
 
     for item in list:
         enviar_Mensaje_whatsapp(item)

@@ -39,9 +39,11 @@ def recibir_mensajes():
         timestamp = int(message['timestamp'])
         
         if str(number) in dict_sesiones.keys():
+            print("entre por el if app")
             services.administrar_chatbot(text, number,messageId,name,timestamp)
             return 'enviado'
         else:
+            print("entre por el else app")
             generar_dict(number)
             services.administrar_chatbot(text, number,messageId,name,timestamp)
             return 'enviado'
