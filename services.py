@@ -230,6 +230,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     markRead = markRead_Message(messageId)
     list.append(markRead)
     time.sleep(1)
+    print(app.dict_sesiones)
     valor= int(app.dict_sesiones[str(number)]['flujo'])
     
     match valor:
