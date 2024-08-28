@@ -14,7 +14,7 @@ db =SQLAlchemy(app)
 app.config['SESSION_SQLALCHEMY'] = db
 
 sess = Session(app)
-
+sess.init_app(app)
 #db.create_all()
 
 name_glpi = ''
