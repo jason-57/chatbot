@@ -1,31 +1,15 @@
-from flask import Flask, request, render_template, session
-from flask_session import Session
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, request, render_template
 import sett 
 import services
 
 app = Flask(__name__)
-app.config['SECRET_KEY']= 'mysecret'
-app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:///db.sqlite3'
-app.config['SESSION_TYPE']= 'sqlalchemy'
 
-db =SQLAlchemy(app)
+dict_sesiones={}
 
-app.config['SESSION_SQLALCHEMY'] = db
+def generar_dict(numero):
+    dict_sesiones[str(numero)] = {"flujo": 0, "name_glpi": "", "area_glpi": "", "prioridad_glpi": "", "tipoticket_glpi": "", "titulo_glpi": "", "descripcion_glpi": "", "fechacreacion_glpi": "", }
 
-sess = Session(app)
-sess.init_app(app)
-#db.create_all()
-
-name_glpi = ''
-area_glpi = ''
-prioridad_glpi = ''
-tipoticket_glpi = ''
-titulo_glpi = ''
-descripcion_glpi = ''
-fechacreacion_glpi = ''
-
-
+print(dict_sesiones)
 @app.route('/webhook', methods=['GET'])
 def verificar_token():
     try:
@@ -52,11 +36,14 @@ def recibir_mensajes():
         contacts = value['contacts'][0]
         name = contacts['profile']['name']
         text = services.obtener_Mensaje_whatsapp(message)
-        timestamp = int(message['timestamp'])  
-        session['sesion'] = str(number)        
-
-        services.administrar_chatbot(text, number,messageId,name,timestamp)
-        return 'enviado'
+        timestamp = int(message['timestamp'])
+        if str(number) in dict_sesiones.keys():
+            services.administrar_chatbot(text, number,messageId,name,timestamp)
+            return 'enviado'
+        else:
+            generar_dict(number)
+            services.administrar_chatbot(text, number,messageId,name,timestamp)
+            return 'enviado'
 
     except Exception as e:
         return 'no enviado ' + str(e)
