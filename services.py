@@ -235,19 +235,22 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     
     match valor:
         case 0:
-            textMessage = text_Message(number,"👋Bienvenido al área de soporte técnico Redsis\nPor favor indícanos tú nombre usando el siguiente formato:\n\n*Name: <Tú Nombre>*")        
+            textMessage = text_Message(number,"👋Bienvenido al área de soporte técnico Redsis\nPor favor indícanos tú nombre.\n")        
             list.append(textMessage)
+
         case 1:
-            body = f"¿Hola, {app.dict_sesiones[str(number)]['name_glpi']} en que podemos ayudarte hoy?"
+            app.dict_sesiones[str(number)]['name_glpi'] = str(text).capitalize()
+            body = f"¿Hola, *{app.dict_sesiones[str(number)]['name_glpi']}* en que podemos ayudarte hoy?"
             footer = "Redsis su aliado estratégico"
             options = ["Generar Ticket", "Ver Estado Ticket"]
 
             replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
             replyReaction = replyReaction_Message(number, messageId, "👍")
             list.append(replyReaction)
-            list.append(replyButtonData)
-        case 2:
-            body = f"Perfecto {app.dict_sesiones[str(number)]['name_glpi']}, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
+            list.append(replyButtonData)   
+
+        case 2:            
+            body = f"Perfecto *{app.dict_sesiones[str(number)]['name_glpi']}*, para crear un nuevo ticket por favor indícanos el área a la que perteneces."
             footer = "Redsis su aliado estratégico"
             options = ["Comercial", "Sistemas", "Jurídica","Financiera", "Recursos Humanos"]
             
@@ -256,7 +259,8 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(replyReaction)
             list.append(replyListData)
         case 3:
-            body = f"{app.dict_sesiones[str(number)]['name_glpi']} ahora por favor indícanos el tipo de ticket que deseas generar"
+            app.dict_sesiones[str(number)]['area_glpi']=text
+            body = f"*{app.dict_sesiones[str(number)]['name_glpi']}* ahora por favor indícanos el tipo de ticket que deseas generar"
             footer = "Redsis su aliado estratégico"
             options = ["Incidente", "Requerimiento"]
 
@@ -265,7 +269,8 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(replyReaction)
             list.append(replyButtonData)
         case 4:
-            body = f"Perfecto! Ahora selecciona la prioridad para tu {app.dict_sesiones[str(number)]['tipoticket_glpi']} según la urgencia con la que debe ser atendida:"
+            app.dict_sesiones[str(number)]['tipoticket_glpi']=text
+            body = f"Perfecto! Ahora selecciona la prioridad para tu *{app.dict_sesiones[str(number)]['tipoticket_glpi']}* según la urgencia con la que debe ser atendida:"
             footer = "Redsis su aliado estratégico"
             options = ["Baja", "Media","Alta"]
 
@@ -274,12 +279,16 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(replyReaction)
             list.append(replyButtonData)
         case 5:
-            textMessage = text_Message(number,f"{app.dict_sesiones[str(number)]['name_glpi']} ingresa el encabezado de tu {app.dict_sesiones[str(number)]['tipoticket_glpi']} usando el siguiente formato:\n\n*Title: <Título de tu {app.dict_sesiones[str(number)]['tipoticket_glpi']}>*")        
+            app.dict_sesiones[str(number)]['prioridad_glpi']=text 
+            textMessage = text_Message(number,f"*{app.dict_sesiones[str(number)]['name_glpi']}* ingresa el encabezado de tu *{app.dict_sesiones[str(number)]['tipoticket_glpi']}.*\n")        
             list.append(textMessage)
         case 6:
-            textMessage = text_Message(number,f"{app.dict_sesiones[str(number)]['name_glpi']}, ahora ingresa una breve descripción de tu solicitud usando el siguiente formato:\n\n*Description: <Descripción de tu {app.dict_sesiones[str(number)]['tipoticket_glpi']}>*")        
+            app.dict_sesiones[str(number)]['titulo_glpi']=text
+            textMessage = text_Message(number,f"*{app.dict_sesiones[str(number)]['name_glpi']}*, ahora ingresa una breve descripción de tu *{app.dict_sesiones[str(number)]['tipoticket_glpi']}*\n")        
             list.append(textMessage)
         case 7:
+            app.dict_sesiones[str(number)]['descripcion_glpi']=text
+            app.dict_sesiones[str(number)]['fechacreacion_glpi']=datetime.fromtimestamp(timestamp)
             ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
             db_manager.create_ticket(db_type, conn, ticket_id, 'Nuevo', app.dict_sesiones[str(number)]['fechacreacion_glpi'], number, name, app.dict_sesiones[str(number)]['descripcion_glpi'])  
             body = f"{app.dict_sesiones[str(number)]['name_glpi']} se generó el ticket *{ticket_id}* para tú *{app.dict_sesiones[str(number)]['tipoticket_glpi']}* \"*{app.dict_sesiones[str(number)]['titulo_glpi']}*\" satisfactoriamente.👍 \n\nDeseas realizar otra consulta?"
