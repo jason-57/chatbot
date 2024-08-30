@@ -7,7 +7,7 @@ app = Flask(__name__)
 dict_sesiones={}
 
 def generar_dict(numero):
-    dict_sesiones[str(numero)] = {"flujo": 0, "name_glpi": "", "area_glpi": "", "prioridad_glpi": "", "tipoticket_glpi": "", "titulo_glpi": "", "descripcion_glpi": "", "fechacreacion_glpi": "", }
+    dict_sesiones[str(numero)] = {"flujo": "0", "name_glpi": "", "area_glpi": "", "prioridad_glpi": "", "tipoticket_glpi": "", "titulo_glpi": "", "descripcion_glpi": "", "fechacreacion_glpi": "", }
 
 
 @app.route('/webhook', methods=['GET'])
