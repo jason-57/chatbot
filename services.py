@@ -292,6 +292,11 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(replyButtonData)
         else:
             app.dict_sesiones[str(number)]['flujo'] ="2"
+            body = "Lo siento, no entendí lo que dijiste🤷. Quieres que te ayude con alguna de estas opciones❓"
+            footer = "Redsis su aliado estratégico"
+            options = ["Generar Ticket", "Ver Estado Ticket"]
+            replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
+            list.append(replyButtonData)
             
 
     elif app.dict_sesiones[str(number)]['flujo'] == "4":
@@ -308,6 +313,11 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(replyButtonData)
         else:
             app.dict_sesiones[str(number)]['flujo'] ="2"
+            body = "Lo siento, no entendí lo que dijiste🤷. Quieres que te ayude con alguna de estas opciones❓"
+            footer = "Redsis su aliado estratégico"
+            options = ["Generar Ticket", "Ver Estado Ticket"]
+            replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
+            list.append(replyButtonData)
             
     
     elif app.dict_sesiones[str(number)]['flujo'] == "5":
@@ -318,6 +328,11 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(textMessage)
         else:
             app.dict_sesiones[str(number)]['flujo'] ="2"
+            body = "Lo siento, no entendí lo que dijiste🤷. Quieres que te ayude con alguna de estas opciones❓"
+            footer = "Redsis su aliado estratégico"
+            options = ["Generar Ticket", "Ver Estado Ticket"]
+            replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
+            list.append(replyButtonData)
             
 
     elif app.dict_sesiones[str(number)]['flujo'] == "6":
@@ -365,6 +380,11 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
 
         else:
             app.dict_sesiones[str(number)]['flujo'] ="2"
+            body = "Lo siento, no entendí lo que dijiste🤷. Quieres que te ayude con alguna de estas opciones❓"
+            footer = "Redsis su aliado estratégico"
+            options = ["Generar Ticket", "Ver Estado Ticket"]
+            replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
+            list.append(replyButtonData)
             
 
     for item in list:
