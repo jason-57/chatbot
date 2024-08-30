@@ -218,23 +218,6 @@ def markRead_Message(messageId):
         }
     )
     return data
-def default_error(number, messageId):
-    app.dict_sesiones[str(number)] = {"area_glpi": "", "prioridad_glpi": "", "tipoticket_glpi": "", "titulo_glpi": "", "descripcion_glpi": "", "fechacreacion_glpi": ""}
-    body = "Lo siento, no entendí lo que dijiste🤷. Quieres que te ayude con alguna de estas opciones❓"
-    footer = "Redsis su aliado estratégico"
-    options = ["Generar Ticket", "Ver Estado Ticket"]
-    replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
-    list.append(replyButtonData)
-
-def menu_principal(number, messageId):
-    body = f"¿*{app.dict_sesiones[str(number)]['name_glpi']}* en que podemos ayudarte hoy❓"
-    footer = "Redsis su aliado estratégico"
-    options = ["Generar Ticket", "Ver Estado Ticket"]
-
-    replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
-    replyReaction = replyReaction_Message(number, messageId, "👍")
-    list.append(replyReaction)
-    list.append(replyButtonData) 
     
 
 def administrar_chatbot(text,number, messageId, name, timestamp):
@@ -260,7 +243,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     elif app.dict_sesiones[str(number)]['flujo'] == "1":
         app.dict_sesiones[str(number)]['flujo'] ="2"
         app.dict_sesiones[str(number)]['name_glpi'] = str(text).capitalize()
-        body = f"¿*{app.dict_sesiones[str(number)]['name_glpi']}* en que podemos ayudarte hoy❓"
+        body = f"¿{app.dict_sesiones[str(number)]['name_glpi']} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
         options = ["Generar Ticket", "Ver Estado Ticket"]
 
@@ -270,7 +253,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         list.append(replyButtonData) 
 
     elif app.dict_sesiones[str(number)]['flujo'] == "2":
-        if text=="Generar Ticket":
+        if text=="generar ticket":
             app.dict_sesiones[str(number)]['flujo'] ="3"
             body = f"📋Perfecto *{app.dict_sesiones[str(number)]['name_glpi']}*, para generar un nuevo ticket por favor indícanos el área a la que perteneces.🏢"
             footer = "Redsis su aliado estratégico"
@@ -281,14 +264,18 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(replyReaction)
             list.append(replyListData)
 
-        elif text == "Ver Estado Ticket":  
+        elif text == "ver estado ticket":  
             app.dict_sesiones[str(number)]['flujo'] ="100"
             textMessage = text_Message(number,f"🔎*{app.dict_sesiones[str(number)]['name_glpi']}* por favor ingresa el codigo del ticket (TKTXXX) que deseas verificar.\n\n ")
             list.append(textMessage)
 
         else:
             app.dict_sesiones[str(number)]['flujo'] ="2"
-            default_error(number, messageId)
+            body = "Lo siento, no entendí lo que dijiste🤷. Quieres que te ayude con alguna de estas opciones❓"
+            footer = "Redsis su aliado estratégico"
+            options = ["Generar Ticket", "Ver Estado Ticket"]
+            replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
+            list.append(replyButtonData)
 
     elif app.dict_sesiones[str(number)]['flujo'] == "3":
         area = str(text).lower()
@@ -305,10 +292,10 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(replyButtonData)
         else:
             app.dict_sesiones[str(number)]['flujo'] ="2"
-            default_error(number, messageId)
+            
 
     elif app.dict_sesiones[str(number)]['flujo'] == "4":
-        if text =="Incidente" or text == "Requerimiento":
+        if text =="incidente" or text == "requerimiento":
             app.dict_sesiones[str(number)]['flujo'] = "5"
             app.dict_sesiones[str(number)]['tipoticket_glpi']=text
             body = f"Perfecto! Ahora selecciona la prioridad para tu *{app.dict_sesiones[str(number)]['tipoticket_glpi']}* según la urgencia con la que debe ser atendida🚨"
@@ -321,17 +308,17 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(replyButtonData)
         else:
             app.dict_sesiones[str(number)]['flujo'] ="2"
-            default_error(number, messageId)
+            
     
     elif app.dict_sesiones[str(number)]['flujo'] == "5":
-        if text == "Baja" or text == "Media" or text == "Alta":
+        if text == "baja" or text == "media" or text == "alta":
             app.dict_sesiones[str(number)]['flujo'] = "6"
             app.dict_sesiones[str(number)]['prioridad_glpi']=text 
             textMessage = text_Message(number,f"*{app.dict_sesiones[str(number)]['name_glpi']}* ingresa el encabezado de tu *{app.dict_sesiones[str(number)]['tipoticket_glpi']}.*🔤\n")        
             list.append(textMessage)
         else:
             app.dict_sesiones[str(number)]['flujo'] ="2"
-            default_error(number, messageId)
+            
 
     elif app.dict_sesiones[str(number)]['flujo'] == "6":
         app.dict_sesiones[str(number)]['flujo'] = "7"
@@ -367,18 +354,18 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         list.append(replyButtonData)
     
     elif app.dict_sesiones[str(number)]['flujo'] == "101":
-        if text == "✔️Sí":
+        if text == "✔️sí":
             app.dict_sesiones[str(number)]['flujo'] = "2"
-            menu_principal(number, messageId)
+            
 
-        elif text == "❌No, gracias":
+        elif text == "❌no, gracias":
             textMessage = text_Message(number,"Perfecto! No dudes en contactarnos si tienes más preguntas.\n 🖐️Hasta luego!")
             list.append(textMessage)
             del(app.dict_sesiones[str(number)])
 
         else:
             app.dict_sesiones[str(number)]['flujo'] ="2"
-            default_error(number, messageId)
+            
 
     for item in list:
         enviar_Mensaje_whatsapp(item)
