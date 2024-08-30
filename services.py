@@ -260,7 +260,14 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     elif app.dict_sesiones[str(number)]['flujo'] == "1":
         app.dict_sesiones[str(number)]['flujo'] ="2"
         app.dict_sesiones[str(number)]['name_glpi'] = str(text).capitalize()
-        menu_principal(number, messageId)
+        body = f"¿*{app.dict_sesiones[str(number)]['name_glpi']}* en que podemos ayudarte hoy❓"
+        footer = "Redsis su aliado estratégico"
+        options = ["Generar Ticket", "Ver Estado Ticket"]
+
+        replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
+        replyReaction = replyReaction_Message(number, messageId, "👍")
+        list.append(replyReaction)
+        list.append(replyButtonData) 
 
     elif app.dict_sesiones[str(number)]['flujo'] == "2":
         if text=="Generar Ticket":
