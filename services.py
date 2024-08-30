@@ -355,7 +355,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
 
     elif app.dict_sesiones[str(number)]['flujo'] == "100":
         app.dict_sesiones[str(number)]['flujo'] = "101"
-        ticket_id= text        
+        ticket_id= str(text).upper()
         status = db_manager.get_ticket(db_type, conn, ticket_id)  
 
         if status == None:            
