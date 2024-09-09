@@ -266,11 +266,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
                 list1.append(item2)
             print("Aca las areas:")
             print(list1)
-            options=list1
-            for item in lista_areas:
-                options.append(item)
-                print(options)
-            
+            options=list1            
             replyListData = listReply_Message(number, options, body, footer, "sed1",messageId)
             replyReaction = replyReaction_Message(number, messageId, "👍")
             list.append(replyReaction)

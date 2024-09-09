@@ -53,7 +53,7 @@ class DatabaseManager:
                 return None
             
 
-    def get_areas(self, db_type, conn):
+    def get_areas(db_type, conn):
         if db_type == 'postgresql' or db_type == 'mysql' :
             cur = conn.cursor()
             query = f"SELECT name_area FROM areas "
