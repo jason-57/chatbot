@@ -232,8 +232,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     list.append(markRead)
     time.sleep(1)
     print(f"nuevo estdo del diccionario {app.dict_sesiones}")
-
-    lista_areas=["comercial", "sistemas", "jurídica","financiera", "recursos humanos"]
+    
 
     if app.dict_sesiones[str(number)]['flujo'] == "0":
         app.dict_sesiones[str(number)]['flujo'] ="1"
@@ -255,10 +254,15 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     elif app.dict_sesiones[str(number)]['flujo'] == "2":
         
         if text=="generar ticket":
-            app.dict_sesiones[str(number)]['flujo'] ="3"                        
+            print('entre al flujo 2')
+            app.dict_sesiones[str(number)]['flujo'] ="3"     
+            print('cambie a flujo3')                   
             body = f"📋Perfecto *{app.dict_sesiones[str(number)]['name_glpi']}*, para generar un nuevo ticket por favor indícanos el área a la que perteneces.🏢"
+            print('cargue mensaje al body')
             footer = "Redsis su aliado estratégico"
+            print('cargue al footer')
             lista_areas = db_manager.get_areas(db_type, conn)
+            print('acá debe estar las lista de areas consultadas')
             print(lista_areas)
             list1=[]
             list2 =lista_areas.split(', ')
