@@ -56,12 +56,12 @@ class DatabaseManager:
     def get_areas(self, db_type, conn):
         if db_type == 'postgresql' or db_type == 'mysql' :
             cur = conn.cursor()
-            query = f"SELECT * FROM areas"
+            query = f"SELECT name_area FROM areas "
             cur.execute(query)
             result = cur.fetchall()
             cur.close()
             if result is not None:  # validamos en caso no existan areas
-                return result[0]
+                return result
             else:
                 print(f"No se encontraron areas relacionadas")
                 return None
