@@ -370,7 +370,12 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     
     elif app.dict_sesiones[str(number)]['flujo'] == "101":
         if text == "✔️sí":
-            app.dict_sesiones[str(number)]['flujo'] = "2"
+            app.dict_sesiones[str(number)]['flujo'] ="2"
+            body = f"{app.dict_sesiones[str(number)]['name_glpi']} en que otra cosa te podemos colaborar?"
+            footer = "Redsis su aliado estratégico"
+            options = ["Generar Ticket", "Ver Estado Ticket"]
+            replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
+            list.append(replyButtonData)
             
 
         elif text == "❌no, gracias":
