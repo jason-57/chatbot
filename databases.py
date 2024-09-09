@@ -52,6 +52,20 @@ class DatabaseManager:
                 print(f"No se encontró ningún ticket con ID {ticket_id} en {db_type}.")
                 return None
             
+
+    def get_areas(self, db_type, conn):
+        if db_type == 'postgresql' or db_type == 'mysql' :
+            cur = conn.cursor()
+            query = f"SELECT * FROM areas"
+            cur.execute(query)
+            result = cur.fetchall()
+            cur.close()
+            if result is not None:  # validamos en caso no existan areas
+                return result[0]
+            else:
+                print(f"No se encontraron areas relacionadas")
+                return None
+            
         
     def update_ticket(self, db_type, conn, ticket_id, description):
         if db_type == 'postgresql' or db_type == 'mysql' :
