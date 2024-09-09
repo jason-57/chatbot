@@ -261,7 +261,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             print('cargue mensaje al body')
             footer = "Redsis su aliado estratégico"
             print('cargue al footer')
-            lista_areas = db_manager.get_areas(db_type, conn)
+            lista_areas = str(db_manager.get_areas(db_type, conn))
             print('acá debe estar las lista de areas consultadas')
             print(lista_areas)
             list1=[]
