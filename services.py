@@ -259,9 +259,14 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             body = f"📋Perfecto *{app.dict_sesiones[str(number)]['name_glpi']}*, para generar un nuevo ticket por favor indícanos el área a la que perteneces.🏢"
             footer = "Redsis su aliado estratégico"
             lista_areas = db_manager.get_areas(db_type, conn)
+            list1=[]
+            list2 =lista_areas.split(', ')
+            for item in list2 :
+                item2=item.replace('[', '').replace('\'', '').replace('(', '').replace(')', '').replace(',', '').replace(']', '')
+                list1.append(item2)
             print("Aca las areas:")
-            print(lista_areas)
-            options=[]
+            print(list1)
+            options=list1
             for item in lista_areas:
                 options.append(item)
                 print(options)
