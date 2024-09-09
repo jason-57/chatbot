@@ -266,7 +266,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
 
         elif text == "ver estado ticket":  
             app.dict_sesiones[str(number)]['flujo'] ="100"
-            textMessage = text_Message(number,f"🔎*{app.dict_sesiones[str(number)]['name_glpi']}* por favor ingresa el codigo del ticket (TKTXXX) que deseas verificar.\n\n ")
+            textMessage = text_Message(number,f"🔎 *{app.dict_sesiones[str(number)]['name_glpi']}* por favor ingresa el codigo del ticket (TKTXXX) que deseas verificar.\n\n ")
             list.append(textMessage)
 
         else:
