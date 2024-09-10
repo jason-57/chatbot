@@ -61,11 +61,13 @@ class DatabaseManager:
             result_consulta = cur.fetchall()
             areas=str(result_consulta)
             lista_areas=areas.split(', ')
+            print(lista_areas)
             result=[]
             for item in lista_areas:
                 item2=item.replace('[', '').replace('\'', '').replace('(', '').replace(')', '').replace(',', '').replace(']', '')
                 result.append(item2)                
             cur.close()
+            print(result)
             if result is not None:  # validamos en caso no existan areas
                 return result
             else:
