@@ -254,37 +254,14 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     elif app.dict_sesiones[str(number)]['flujo'] == "2":
         
         if text=="generar ticket":
-            print('entre al flujo 2')
-            app.dict_sesiones[str(number)]['flujo'] ="3"     
-            print('cambie a flujo3')                   
+            app.dict_sesiones[str(number)]['flujo'] ="3"      
             body = f"📋Perfecto *{app.dict_sesiones[str(number)]['name_glpi']}*, para generar un nuevo ticket por favor indícanos el área a la que perteneces.🏢"
-            print('cargue mensaje al body')
             footer = "Redsis su aliado estratégico"
-            print('cargue al footer')
-            lista_areas = str(db_manager.get_areas(db_type, conn))
-            print('acá debe estar las lista de areas consultadas')
-            print(lista_areas)
-            list1=[]
-            list2 =lista_areas.split(', ')
-            print(list2)
-            for item in list2 :
-                item2=item.replace('[', '').replace('\'', '').replace('(', '').replace(')', '').replace(',', '').replace(']', '')
-                list1.append(item2)
-                print(list1)
-            print("Aca las areas:")
-            print(list1)
-            options=list1  
-            print(options)          
+            options = db_manager.get_areas(db_type, conn) 
             replyListData = listReply_Message(number, options, body, footer, "sed1",messageId)
             replyReaction = replyReaction_Message(number, messageId, "👍")
             list.append(replyReaction)
             list.append(replyListData)
-
-
-
-
-
-
 
         elif text == "ver estado ticket":  
             app.dict_sesiones[str(number)]['flujo'] ="100"

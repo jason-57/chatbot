@@ -56,9 +56,15 @@ class DatabaseManager:
     def get_areas(db_type, conn):
         if db_type == 'postgresql' or db_type == 'mysql' :
             cur = conn.cursor()
-            query = f"SELECT name_area FROM areas "
+            query = f"SELECT name_area FROM areas"
             cur.execute(query)
-            result = cur.fetchall()
+            result_consulta = cur.fetchall()
+            areas=str(result_consulta)
+            lista_areas=areas.split(', ')
+            result=[]
+            for item in lista_areas:
+                item2=item.replace('[', '').replace('\'', '').replace('(', '').replace(')', '').replace(',', '').replace(']', '')
+                result.append(item2)                
             cur.close()
             if result is not None:  # validamos en caso no existan areas
                 return result
