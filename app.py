@@ -4,12 +4,6 @@ import services
 
 app = Flask(__name__)
 
-dict_sesiones={}
-
-def generar_dict(numero):
-    dict_sesiones[str(numero)] = {"flujo": "0", "name_glpi": "", "area_glpi": "", "prioridad_glpi": "", "tipoticket_glpi": "", "titulo_glpi": "", "descripcion_glpi": "", "fechacreacion_glpi": "", }
-
-
 @app.route('/webhook', methods=['GET'])
 def verificar_token():
     try:
@@ -23,6 +17,11 @@ def verificar_token():
     except Exception as e:
         return e,403
     
+dict_sesiones={}
+
+def generar_dict(numero):
+    dict_sesiones[str(numero)] = {"flujo": "0", "name_glpi": "", "area_glpi": "", "prioridad_glpi": "", "tipoticket_glpi": "", "titulo_glpi": "", "descripcion_glpi": "", "fechacreacion_glpi": "", }
+
 @app.route('/webhook', methods=['POST'])
 def recibir_mensajes():       
     try:              
@@ -52,4 +51,4 @@ def recibir_mensajes():
         return 'no enviado ' + str(e)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=10443, debug=True)

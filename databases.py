@@ -30,10 +30,10 @@ class DatabaseManager:
         else:
             pass
     
-    def create_ticket(self, db_type, conn, ticket_id, status, created_at, number, name, description):
+    def create_ticket(self, db_type, conn, area, asunto, descripcion, prioridad, fecha,fecha_creación):
         if db_type == 'postgresql' or db_type == 'mysql' :
             cur = conn.cursor()
-            query = f"INSERT INTO tickets (ticket_id, status, created_at, number, name, description) VALUES ('{ticket_id}', '{status}', '{created_at}', '{number}', '{name}', '{description}')"
+            query = f"INSERT INTO glpi_tickets (entities_id, name, content, priority, date, date_creation) VALUES ('{area}','{asunto}','{descripcion}','{prioridad}','{fecha}','{fecha_creación}')"
             cur.execute(query)
             conn.commit()
             cur.close()
@@ -42,7 +42,7 @@ class DatabaseManager:
     def get_ticket(self, db_type, conn, ticket_id):
         if db_type == 'postgresql' or db_type == 'mysql' :
             cur = conn.cursor()
-            query = f"SELECT status FROM tickets WHERE ticket_id = '{ticket_id}'"
+            query = f"SELECT id FROM glpi_tickets WHERE id = '{ticket_id}'"
             cur.execute(query)
             result = cur.fetchone()
             cur.close()
@@ -52,51 +52,3 @@ class DatabaseManager:
                 print(f"No se encontró ningún ticket con ID {ticket_id} en {db_type}.")
                 return None
             
-
-    def get_areas(db_type, conn):
-        if db_type == 'postgresql' or db_type == 'mysql' :
-            cur = conn.cursor()
-            query = f"SELECT name_area FROM areas"
-            cur.execute(query)
-            result_consulta = cur.fetchall()
-            areas=str(result_consulta)
-            lista_areas=areas.split(', ')
-            print(lista_areas)
-            result=[]
-            for item in lista_areas:
-                item2=item.replace('[', '').replace('\'', '').replace('(', '').replace(')', '').replace(',', '').replace(']', '')
-                result.append(item2)                
-            cur.close()
-            print(result)
-            if result is not None:  # validamos en caso no existan areas
-                return result
-            else:
-                print(f"No se encontraron areas relacionadas")
-                return None
-            
-        
-    def update_ticket(self, db_type, conn, ticket_id, description):
-        if db_type == 'postgresql' or db_type == 'mysql' :
-            cur = conn.cursor()
-            query = f"UPDATE tickets SET description = '{description}' WHERE ticket_id = '{ticket_id}'"
-            cur.execute(query)
-            conn.commit()
-            updated_rows = cur.rowcount
-            cur.close()
-            return updated_rows > 0  # Devuelve True si se actualizó al menos una fila
-        
-    def generate_next_ticket_id(self, db_type, conn):
-        last_ticket_id=''
-        if db_type == 'postgresql' or db_type == 'mysql' :
-            cur = conn.cursor()
-            query = "SELECT ticket_id FROM tickets ORDER BY ticket_id DESC LIMIT 1"
-            cur.execute(query)
-            result = cur.fetchone()
-            last_ticket_id = result[0] if result else "TKT000"  
-            cur.close()
-        
-                
-        last_number = int(last_ticket_id[3:])
-        next_number = last_number + 1
-        next_ticket_id = f"TKT{str(next_number).zfill(3)}"
-        return next_ticket_id

@@ -257,7 +257,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             app.dict_sesiones[str(number)]['flujo'] ="3"      
             body = f"📋Perfecto *{app.dict_sesiones[str(number)]['name_glpi']}*, para generar un nuevo ticket por favor indícanos el área a la que perteneces.🏢"
             footer = "Redsis su aliado estratégico"
-            options = db_manager.get_areas(db_type, conn) 
+            options = ["Sistemas", "Comercial", "Auditoria"] 
             replyListData = listReply_Message(number, options, body, footer, "sed1",messageId)
             replyReaction = replyReaction_Message(number, messageId, "👍")
             list.append(replyReaction)
@@ -277,10 +277,10 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(replyButtonData)
 
     elif app.dict_sesiones[str(number)]['flujo'] == "3":
-        area = str(text).lower()
-        if area in lista_areas:
+        if text=="Sistemas" or text=="Comercial" or text=="Auditoria":
+            #Consulta bd por el id del area y ese es el que se guarda
             app.dict_sesiones[str(number)]['flujo'] = "4"
-            app.dict_sesiones[str(number)]['area_glpi']=area
+            app.dict_sesiones[str(number)]['area_glpi']=str(text)
             body = f"*{app.dict_sesiones[str(number)]['name_glpi']}* ahora por favor indícanos el tipo de ticket que deseas generar📇"
             footer = "Redsis su aliado estratégico"
             options = ["Incidente", "Requerimiento"]
@@ -344,8 +344,9 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         app.dict_sesiones[str(number)]['flujo'] = "101"
         app.dict_sesiones[str(number)]['descripcion_glpi'] = str(text).lower()
         app.dict_sesiones[str(number)]['fechacreacion_glpi']=datetime.fromtimestamp(timestamp)
-        ticket_id = db_manager.generate_next_ticket_id(db_type, conn) 
-        db_manager.create_ticket(db_type, conn, ticket_id, 'Asignado', app.dict_sesiones[str(number)]['fechacreacion_glpi'], number, name, app.dict_sesiones[str(number)]['descripcion_glpi'])  
+        #INSERT INTO glpi_tickets (entities_id, name, content, priority, date, date_creation) VALUES ('{area}','{asunto}','{descripcion}','{prioridad}','{fecha}','{fecha_creación}')"
+        #{"flujo": "0", "name_glpi": "", "area_glpi": "", "prioridad_glpi": "", "tipoticket_glpi": "", "titulo_glpi": "", "descripcion_glpi": "", "fechacreacion_glpi": "", }
+        db_manager.create_ticket(db_type, conn, app.dict_sesiones[str(number)]['area_glpi'], app.dict_sesiones[str(number)]['titulo_glpi'], app.dict_sesiones[str(number)]['descripcion_glpi'], app.dict_sesiones[str(number)]['prioridad_glpi'], app.dict_sesiones[str(number)]['fechacreacion_glpi'], app.dict_sesiones[str(number)]['fechacreacion_glpi'] )  
         body = f"{app.dict_sesiones[str(number)]['name_glpi']} se generó el ticket *{ticket_id}* para tú *{app.dict_sesiones[str(number)]['tipoticket_glpi']}* \"*{app.dict_sesiones[str(number)]['titulo_glpi']}*\" satisfactoriamente.👍 \n\nDeseas realizar otra consulta?"
         footer = "Redsis su aliado estratégico"
         options = ["✔️Sí", "❌No, gracias"]
