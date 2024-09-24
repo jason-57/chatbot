@@ -277,7 +277,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
             list.append(replyButtonData)
 
     elif app.dict_sesiones[str(number)]['flujo'] == "3":
-        if text=="Sistemas" or text=="Comercial" or text=="Auditoria":
+        if text=="sistemas" or text=="comercial" or text=="auditoria":
             #Consulta bd por el id del area y ese es el que se guarda
             app.dict_sesiones[str(number)]['flujo'] = "4"
             app.dict_sesiones[str(number)]['area_glpi']=str(text)
