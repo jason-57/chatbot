@@ -233,6 +233,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     time.sleep(1)
     print(f"nuevo estdo del diccionario {app.dict_sesiones}")
     
+    
 
     if app.dict_sesiones[str(number)]['flujo'] == "0":
         app.dict_sesiones[str(number)]['flujo'] ="1"
