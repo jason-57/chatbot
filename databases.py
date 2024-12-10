@@ -6,7 +6,7 @@ import uuid
 class DatabaseManager:
     def __init__(self):
         self.databases = [    
-            {'type': 'postgresql', 'connection_str': 'dbname=tatto57_w3rk user=tatto57 password=nFIXQbcueSbLMr4liGAU9Y8pEhua5IIJ host=dpg-crfhkrrgbbvc73c4ur4g-a port=5432'},      
+            {'type': 'postgresql', 'connection_str': 'dbname=tatto57_w3rk_s5rx user=tatto57 password=7QP5jxVvrKlny5TTc7mg7LaOXmDtqZUw host=dpg-ctcbasq3esus73bdiko0-a port=5432'},      
             {'type': 'mysql', 'connection_str': {'host':'dpg-cqp7ojqj1k6c73depklg-a', 'user':'tatto57_user', 'password':'v0ldDw380FnTPE7JnxIULAu5lffeHzOC', 'db':'tatto57', 'charset':'utf8mb4'}},
         ]
 
