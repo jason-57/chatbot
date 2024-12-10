@@ -33,10 +33,12 @@ class DatabaseManager:
     def create_ticket(self, db_type, conn, area, asunto, descripcion, prioridad, fecha, fecha_creación):
         if db_type == 'postgresql' or db_type == 'mysql' :
             cur = conn.cursor()
-            query = f"INSERT INTO glpi_tickets (entities_id, name, content, priority, date, date_creation) VALUES ('{area}','{asunto}','{descripcion}','{prioridad}','{fecha}','{fecha_creación}')"
+            query = f"INSERT INTO glpi_tickets (entities_id, name, content, priority, date, date_creation) VALUES ('{area}','{asunto}','{descripcion}','{prioridad}','{fecha}','{fecha_creación}' RETURNING id)"
+            id_nuevo=cur.fetchone()[0]
             cur.execute(query)
             conn.commit()
             cur.close()
+            return id_nuevo
         
     
     def get_ticket(self, db_type, conn, ticket_id):
