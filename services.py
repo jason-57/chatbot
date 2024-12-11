@@ -345,9 +345,9 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         app.dict_sesiones[str(number)]['flujo'] = "101"
         app.dict_sesiones[str(number)]['descripcion_glpi'] = str(text).lower()
         app.dict_sesiones[str(number)]['fechacreacion_glpi']=datetime.fromtimestamp(timestamp)        
+        num_ticket = db_manager.create_ticket(db_type, conn, app.dict_sesiones[str(number)]['area_glpi'], app.dict_sesiones[str(number)]['titulo_glpi'], app.dict_sesiones[str(number)]['descripcion_glpi'], app.dict_sesiones[str(number)]['prioridad_glpi'], app.dict_sesiones[str(number)]['fechacreacion_glpi'], app.dict_sesiones[str(number)]['fechacreacion_glpi'] )
         
-               
-        body = f"{app.dict_sesiones[str(number)]['name_glpi']} se generó el ticket {db_manager.create_ticket(db_type, conn, app.dict_sesiones[str(number)]['area_glpi'], app.dict_sesiones[str(number)]['titulo_glpi'], app.dict_sesiones[str(number)]['descripcion_glpi'], app.dict_sesiones[str(number)]['prioridad_glpi'], app.dict_sesiones[str(number)]['fechacreacion_glpi'], app.dict_sesiones[str(number)]['fechacreacion_glpi'] )  } para tú *{app.dict_sesiones[str(number)]['tipoticket_glpi']}* \"*{app.dict_sesiones[str(number)]['titulo_glpi']}*\" satisfactoriamente.👍 \n\nDeseas realizar otra consulta?"
+        body = f"{app.dict_sesiones[str(number)]['name_glpi']} se generó el ticket {num_ticket} para tú *{app.dict_sesiones[str(number)]['tipoticket_glpi']}* \"*{app.dict_sesiones[str(number)]['titulo_glpi']}*\" satisfactoriamente.👍 \n\nDeseas realizar otra consulta?"
         footer = "Redsis su aliado estratégico"
         options = ["✔️Sí", "❌No, gracias"]
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed4",messageId)
