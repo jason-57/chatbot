@@ -257,10 +257,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         
         body = f"¿{app.dict_sesiones[str(number)]['name_glpi']} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
-        options=[]
-        for item in lst_areas[1]:
-            options.append(str(item))   
-        print(options) 
+        options=lst_areas        
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "👍")
         list.append(replyReaction)
