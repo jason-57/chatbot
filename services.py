@@ -248,8 +248,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     if app.dict_sesiones[str(number)]['flujo'] == "0":
         app.dict_sesiones[str(number)]['flujo'] ="1"
         lst_areas=db_manager.list_area(db_type, conn)
-        areas_listadas=str(lst_areas)
-        textMessage = text_Message(number,f"Hola👋 bienvenido al área de soporte técnico Redsis🖥️\nPor favor indícanos tú nombre para poder atenderte.\n{areas_listadas}")        
+        textMessage = text_Message(number,f"Hola👋 bienvenido al área de soporte técnico Redsis🖥️\nPor favor indícanos tú nombre para poder atenderte.\n{lst_areas[0::2]}")        
         list.append(textMessage)
 
     elif app.dict_sesiones[str(number)]['flujo'] == "1":
