@@ -45,7 +45,7 @@ class DatabaseManager:
             cur = conn.cursor()
             query = f"select * from areas"            
             cur.execute(query)
-            areas = cur.fetchone()
+            areas = cur.fetchall()
             conn.commit()
             cur.close()
             return areas

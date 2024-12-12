@@ -247,7 +247,9 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
 
     if app.dict_sesiones[str(number)]['flujo'] == "0":
         app.dict_sesiones[str(number)]['flujo'] ="1"
-        textMessage = text_Message(number,"Hola👋 bienvenido al área de soporte técnico Redsis🖥️\nPor favor indícanos tú nombre para poder atenderte.\n")        
+        lst_areas=db_manager.list_area(db_type, conn)
+        areas_listadas=str(lst_areas)
+        textMessage = text_Message(number,f"Hola👋 bienvenido al área de soporte técnico Redsis🖥️\nPor favor indícanos tú nombre para poder atenderte.\n{areas_listadas}")        
         list.append(textMessage)
 
     elif app.dict_sesiones[str(number)]['flujo'] == "1":
@@ -359,9 +361,8 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         crear_ticket
         num_ticket=str(crear_ticket)
         ticket= ext_ticket(num_ticket)
-        lst_areas=db_manager.list_area(db_type, conn)
-        areas_listadas=str(lst_areas)
-        body = f"{app.dict_sesiones[str(number)]['name_glpi']} se generó el ticket #: *{ticket}* para tú *{app.dict_sesiones[str(number)]['tipoticket_glpi']}* \"*{app.dict_sesiones[str(number)]['titulo_glpi']}*\" satisfactoriamente.👍 \n\n¿Deseas realizar otra consulta?\n{areas_listadas}"
+        
+        body = f"{app.dict_sesiones[str(number)]['name_glpi']} se generó el ticket #: *{ticket}* para tú *{app.dict_sesiones[str(number)]['tipoticket_glpi']}* \"*{app.dict_sesiones[str(number)]['titulo_glpi']}*\" satisfactoriamente.👍 \n\n¿Deseas realizar otra consulta?"
         footer = "Redsis su aliado estratégico"
         options = ["✔️Sí", "❌No, gracias"]
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed4",messageId)
