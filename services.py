@@ -255,7 +255,7 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         app.dict_sesiones[str(number)]['name_glpi'] = str(text).capitalize()        
         body = f"¿{app.dict_sesiones[str(number)]['name_glpi']} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
-        lista_test=["Comercial", "Sistemas", "Jurídica","Financiera", "Recursos Humanos"]
+        lista_test=db_manager.list_area()
         options = []
         for item in lista_test:
             options.append(item)
