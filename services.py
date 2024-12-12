@@ -246,17 +246,18 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
     
 
     if app.dict_sesiones[str(number)]['flujo'] == "0":
-        app.dict_sesiones[str(number)]['flujo'] ="1"
-        lst_areas=db_manager.list_area(db_type, conn)
-        textMessage = text_Message(number,f"Hola👋 bienvenido al área de soporte técnico Redsis🖥️\nPor favor indícanos tú nombre para poder atenderte.\n{lst_areas[0::2]}")        
+        app.dict_sesiones[str(number)]['flujo'] ="1"        
+        textMessage = text_Message(number,f"Hola👋 bienvenido al área de soporte técnico Redsis🖥️\nPor favor indícanos tú nombre para poder atenderte.")        
         list.append(textMessage)
 
     elif app.dict_sesiones[str(number)]['flujo'] == "1":
         app.dict_sesiones[str(number)]['flujo'] ="2"
         app.dict_sesiones[str(number)]['name_glpi'] = str(text).capitalize()
+        lst_areas=db_manager.list_area(db_type, conn)
+        
         body = f"¿{app.dict_sesiones[str(number)]['name_glpi']} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
-        options = ["Generar Ticket", "Ver Estado Ticket"]
+        options = [{lst_areas[0::3]}]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "👍")
