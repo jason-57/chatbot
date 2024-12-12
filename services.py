@@ -225,6 +225,10 @@ def ext_ticket(cadena):
         if item.isnumeric():
             ticket+=item
     return ticket
+
+def ext_areas(cadena):    
+    areas=str(cadena)
+    return areas
         
 def administrar_chatbot(text,number, messageId, name, timestamp):
     
@@ -355,9 +359,9 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         crear_ticket
         num_ticket=str(crear_ticket)
         ticket= ext_ticket(num_ticket)
-        
-
-        body = f"{app.dict_sesiones[str(number)]['name_glpi']} se generó el ticket {ticket} para tú *{app.dict_sesiones[str(number)]['tipoticket_glpi']}* \"*{app.dict_sesiones[str(number)]['titulo_glpi']}*\" satisfactoriamente.👍 \n\nDeseas realizar otra consulta?"
+        lst_areas=db_manager.list_area(db_type, conn)
+        areas_listadas=str(lst_areas)
+        body = f"{app.dict_sesiones[str(number)]['name_glpi']} se generó el ticket #: *{ticket}* para tú *{app.dict_sesiones[str(number)]['tipoticket_glpi']}* \"*{app.dict_sesiones[str(number)]['titulo_glpi']}*\" satisfactoriamente.👍 \n\n¿Deseas realizar otra consulta?\n{areas_listadas}"
         footer = "Redsis su aliado estratégico"
         options = ["✔️Sí", "❌No, gracias"]
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed4",messageId)

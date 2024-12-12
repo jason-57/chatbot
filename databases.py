@@ -39,6 +39,16 @@ class DatabaseManager:
             conn.commit()
             cur.close()
             return ticket
+        
+    def list_area(self, db_type, conn):
+        if db_type == 'postgresql' or db_type == 'mysql' :
+            cur = conn.cursor()
+            query = f"select * from areas"            
+            cur.execute(query)
+            areas = cur.fetchone()
+            conn.commit()
+            cur.close()
+            return areas
             
     
     def get_ticket(self, db_type, conn, ticket_id):
