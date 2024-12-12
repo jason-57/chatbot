@@ -252,19 +252,15 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
 
     elif app.dict_sesiones[str(number)]['flujo'] == "1":
         app.dict_sesiones[str(number)]['flujo'] ="2"
-        app.dict_sesiones[str(number)]['name_glpi'] = str(text).capitalize()
-        lst_areas=db_manager.list_area(db_type, conn)
-        
+        app.dict_sesiones[str(number)]['name_glpi'] = str(text).capitalize()        
         body = f"¿{app.dict_sesiones[str(number)]['name_glpi']} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
-        otras=["1","2","3"]
-        options=[]
-        options.append(otras)
+        options = ["Comercial", "Sistemas", "Jurídica","Financiera", "Recursos Humanos"]
         
-        replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
+        replyListData = listReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "👍")
         list.append(replyReaction)
-        list.append(replyButtonData) 
+        list.append(replyListData)
 
     elif app.dict_sesiones[str(number)]['flujo'] == "2":
         
