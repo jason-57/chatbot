@@ -45,11 +45,12 @@ class DatabaseManager:
             cur = conn.cursor()
             query = f"select * from areas"            
             cur.execute(query)
-            areas = str(cur.fetchall())
-            lista_areas= list(areas.replace("[","").replace("(","").replace(")","").replace("]","").replace(","," ").replace("\'","").split (" "))
+            areas=[]
+            areas.append(cur.fetchall())
+            
             conn.commit()
             cur.close()
-            return lista_areas
+            return areas
             
     
     def get_ticket(self, db_type, conn, ticket_id):
