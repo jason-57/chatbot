@@ -256,11 +256,11 @@ def administrar_chatbot(text,number, messageId, name, timestamp):
         body = f"¿{app.dict_sesiones[str(number)]['name_glpi']} en que podemos ayudarte hoy?"
         footer = "Redsis su aliado estratégico"
         lista_test=db_manager.list_area(db_type, conn)
-        print(lista_test)
+        print(f"esta es la lista test {lista_test}")
         options = []
         for item in lista_test:
             options.append(item)
-        print(options)
+        print(f"esta es la lista opciones{options}")
         replyListData = listReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "👍")
         list.append(replyReaction)

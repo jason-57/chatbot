@@ -40,7 +40,7 @@ class DatabaseManager:
             cur.close()
             return ticket
         
-    def list_area(self, db_type, conn):
+    '''def list_area(self, db_type, conn):
         if db_type == 'postgresql' or db_type == 'mysql' :
             cur = conn.cursor()
             query = f"select * from areas"            
@@ -48,6 +48,15 @@ class DatabaseManager:
             areas=[]
             areas.append(cur.fetchall())
             
+            conn.commit()
+            cur.close()
+            return areas'''
+    def list_area(self, db_type, conn):
+        if db_type == 'postgresql' or db_type == 'mysql' :
+            cur = conn.cursor()
+            query = f"select * from areas"            
+            cur.execute(query)
+            areas=["uno","dos","tres","cuatro","cinco","seis","siete","ocho"]     
             conn.commit()
             cur.close()
             return areas
