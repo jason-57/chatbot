@@ -56,7 +56,7 @@ class DatabaseManager:
             cur = conn.cursor()
             query = f"select * from areas"            
             cur.execute(query)
-            lista_areas= list(query.replace("[","").replace("(","").replace(")","").replace("]","").replace(","," ").replace("\'","").split (" "))              
+            lista_areas= query.replace("[","").replace("(","").replace(")","").replace("]","").replace(","," ").replace("\'","").split (" ")
             conn.commit()
             cur.close()
             return lista_areas
