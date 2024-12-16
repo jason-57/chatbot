@@ -56,9 +56,10 @@ class DatabaseManager:
             cur = conn.cursor()
             query = f"SELECT * FROM areas"            
             cur.execute(query)
-            areas=[]
-            print(f"estas son las cur: {cur}")
-            lista_areas = cur.replace("[", "").replace("(", "").replace(")", "").replace("]", "").replace(",","").replace("\'", "").split(" ")
+            areas= cur.fetchall()
+            print(f"lo que tare el cur: {areas}")
+            lista_areas=[]
+            lista_areas = areas.replace("[", "").replace("(", "").replace(")", "").replace("]", "").replace(",","").replace("\'", "").split(" ")
             print(f"estas es la lista_areas{lista_areas}")
             conn.commit()
             cur.close()
