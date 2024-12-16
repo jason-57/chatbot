@@ -54,9 +54,11 @@ class DatabaseManager:
     def list_area(self, db_type, conn):
         if db_type == 'postgresql' or db_type == 'mysql' :
             cur = conn.cursor()
-            query = f"select * from areas"            
+            query = f"SELECT * FROM areas"            
             cur.execute(query)
-            lista_areas= query.replace("[","").replace("(","").replace(")","").replace("]","").replace(","," ").replace("\'","").split (" ")
+            areas=[]
+            areas.append(cur.fetchall())
+            lista_areas= areas.replace("[","").replace("(","").replace(")","").replace("]","").replace(","," ").replace("\'","").split (" ")
             conn.commit()
             cur.close()
             return lista_areas
