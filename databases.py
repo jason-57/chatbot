@@ -57,10 +57,9 @@ class DatabaseManager:
             query = f"SELECT * FROM areas"            
             cur.execute(query)
             areas=[]
-            areas.append(cur.fetchall())
-            print(f"estas son las areas: {areas})
-            lista_areas= areas.replace("[","").replace("(","").replace(")","").replace("]","").replace(","," ").replace("\'","").split (" ")
-            print(f"estas es la lista_areas"{lista_areas})
+            print(f"estas son las cur: {cur}")
+            lista_areas = cur.replace("[", "").replace("(", "").replace(")", "").replace("]", "").replace(",","").replace("\'", "").split(" ")
+            print(f"estas es la lista_areas{lista_areas}")
             conn.commit()
             cur.close()
             return lista_areas
@@ -78,4 +77,3 @@ class DatabaseManager:
             else:
                 print(f"No se encontró ningún ticket con ID {ticket_id} en {db_type}.")
                 return None
-            
